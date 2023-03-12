@@ -1,0 +1,23 @@
+.intro {
+  padding: 50px 70px 60px;
+  background: var(--dark-background);
+}
+
+.intro__title {
+  max-width: 626px;
+  text-align: left;
+  padding-bottom: 102px;
+  margin: 0 auto 0 0;
+  color: var(--white-text);
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 52px;
+  letter-spacing: -0.04em;
+}
+
+.intro__logo {
+  max-width: 722px;
+  height: 244px;
+  background: url(../../images/intro-logo.svg);
+  margin-left: auto;
+}

@@ -1,0 +1,17 @@
+.page {
+  --dark-background: #5c5c5c;
+  --light-background: #f5f5f5;
+  --white-background: #fff;
+  --white-text: #fff;
+  --black-text: #000;
+  --gray-text: #a0a0a0;
+  --green-button: #2be080;
+  min-width: 320px;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  background: var(--white-background);
+  font-family:'Inter', 'Arial', 'Helvetica', 'sans-serif';
+  text-rendering: optimizeLegibility;
+}
