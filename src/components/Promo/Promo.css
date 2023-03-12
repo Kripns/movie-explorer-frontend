@@ -1,9 +1,9 @@
-.intro {
+.promo {
   padding: 50px 70px 60px;
   background: var(--dark-background);
 }
 
-.intro__title {
+.promo__title {
   max-width: 626px;
   text-align: left;
   padding-bottom: 102px;
@@ -15,9 +15,9 @@
   letter-spacing: -0.04em;
 }
 
-.intro__logo {
+.promo__logo {
   max-width: 722px;
   height: 244px;
-  background: url(../../images/intro-logo.svg);
+  background: url(../../images/promo-logo.svg);
   margin-left: auto;
 }

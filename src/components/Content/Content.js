@@ -1,14 +1,16 @@
-import Intro from '../Intro/Intro';
-import About from '../About/About';
+import Promo from '../Promo/Promo';
+import AboutProject from '../AboutProject/AboutProject';
+import Techs from '../Techs/Techs';
+import AboutMe from '../AboutMe/AboutMe';
 import './Content.css';
 
 function Main() {
   return (
     <main className='content'>
-      <Intro />
-      <About />
-      <section className='stack'></section>
-      <section className='profile'></section>
+      <Promo />
+      <AboutProject />
+      <Techs />
+      <AboutMe />
     </main>
   );
 }
