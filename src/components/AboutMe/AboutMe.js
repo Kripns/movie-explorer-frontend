@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './AboutMe.css';
 
 function AboutMe() {
@@ -6,7 +7,7 @@ function AboutMe() {
       <h2 className='content__title'>Студент</h2>
       <article className='about-me__card'>
         <div className='about-me__avatar' />
-        <div className='about-me__text'>
+        <div className='about-me__text-container'>
           <h3 className='about-me__heading'>Пётр</h3>
           <p className='about-me__subheading'>Фронтенд-разработчик, 30 лет</p>
           <p className='about-me__paragraph'>
@@ -16,9 +17,9 @@ function AboutMe() {
             Контур». После того, как прошёл курс по веб-разработке, начал
             заниматься фриланс-заказами и ушёл с постоянной работы.
           </p>
-          <a className='about-me__link' href='#'>
+          <Link className='about-me__link' to='#'>
             Github
-          </a>
+          </Link>
         </div>
       </article>
     </section>

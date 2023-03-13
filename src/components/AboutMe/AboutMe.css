@@ -1,0 +1,64 @@
+.about-me {
+  padding: 110px 70px 101px;
+}
+
+.about-me__card {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  padding-top: 66px;
+}
+
+.about-me__avatar {
+  width: 270px;
+  height: 327px;
+  background-color: var(--light-background);
+  background: url(../../images/profile-avatar.jpg);
+  border-radius: 10px;
+}
+
+.about-me__text-container {
+  max-width: 600px;
+}
+
+.about-me__heading {
+  margin-block: 0;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+  letter-spacing: -0.04em;
+}
+
+.about-me__subheading {
+  margin-block: 0;
+  padding-top: 18px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  mix-blend-mode: normal;
+}
+
+.about-me__paragraph {
+  margin-block: 0;
+  padding-top: 26px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  mix-blend-mode: normal;
+}
+
+.about-me__link {
+  width: fit-content;
+  display: block;
+  padding-top: 99px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--black-text);
+  transition: opacity .3s;
+}
+
+.about-me__link:hover {
+  opacity: .3;
+}
