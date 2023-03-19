@@ -1,22 +1,21 @@
-import { Form } from 'react-router-dom';
 import './Movies.css';
 
 function Movies() {
   return(
     <section className='movies'>
-      <Form className='search'>
-        <fieldset className='search__input-wrapper'>
-          <input className='search__input' type='search' placeholder='Фильм' />
-          <button className='search__submit-button' />
+      <form className='search-form'>
+        <fieldset className='search-form__input-wrapper'>
+          <input className='search-form__input' type='search-form' placeholder='Фильм' />
+          <button className='search-form__submit-button' />
         </fieldset>
         <fieldset className='checkbox-wrapper'>
           <div>
             <div></div>
-            <input type='checkbox'></input>
+            <input type='checkbox' />
           </div>
-          <label className='checkbox__lable'></label>
+          <label className='checkbox__lable'>Короткометражки</label>
         </fieldset>
-      </Form>
+      </form>
     </section>
   )
 }
