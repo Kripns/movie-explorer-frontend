@@ -6,8 +6,10 @@ function Movies() {
   return(
     <section className='movies'>
       <SearchForm />
-      <MoviesCardList />
-      <button className='movies__button movies__button_margin-bottom'>Ещё</button>
+      <MoviesCardList 
+        buttonClassName='movies__card-button_like'
+      />
+      <button className='movies__button'>Ещё</button>
     </section>
   )
 }

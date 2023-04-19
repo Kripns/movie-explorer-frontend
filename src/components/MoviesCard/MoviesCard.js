@@ -1,7 +1,7 @@
 import './MoviesCard.css';
 
 function MoviesCard(props) {
-  const { card, key } = props;
+  const { card, key, buttonClassName } = props;
 
   return (
     <article className='movies__card' key={key}>
@@ -9,7 +9,7 @@ function MoviesCard(props) {
         <h2 className='movies__card-heading'>{card.name}</h2>
         <p className='movies__card-duration'>{card.duration}</p>
         <button
-          className='movies__card-button movies__card-button_like'
+          className={`movies__card-button ${buttonClassName}`}
           type='button'
           // onClick={handleSaveClick}
         />

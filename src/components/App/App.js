@@ -3,6 +3,7 @@ import './App.css';
 import Header from '../Header/Header.js';
 import Content from '../Content/Content.js';
 import Movies from '../Movies/Movies';
+import SavedMovies from '../SavedMovies/SavedMovies';
 import Footer from '../Footer/Footer';
 import { useState } from 'react';
 
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Content />} />
         <Route path='/movies'element={<Movies />} />
+        <Route path='/saved-movies' element={<SavedMovies />} />
       </Routes>
       <Footer />
     </div>
