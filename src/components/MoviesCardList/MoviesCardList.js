@@ -70,16 +70,16 @@ function MoviesCardList() {
   
   return (
     <ul className='movies__card-list'>
-        {cards.map((item, index) => {
-          return (
-            <li>
-              <MoviesCard
-                key={index}
-                card={item}
-              />
-            </li>
-          );
-        })}
+      {cards.map((item, index) => {
+        return (
+          <li>
+            <MoviesCard
+              key={index}
+              card={item}
+            />
+          </li>
+        );
+      })}
     </ul>
   );
 }

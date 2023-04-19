@@ -1,9 +1,11 @@
 .search-form {
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-  padding: 80px 70px 40px;
-  border-bottom: 1px solid #e8e8e8;
+    display: flex;
+    max-width: calc(1280px - 2 * 70px);
+    width: 100%;
+    flex-direction: column;
+    gap: 28px;
+    padding: 80px 0 40px;
+    border-bottom: 1px solid #e8e8e8;
 }
 
 .search-form__input-wrapper {
