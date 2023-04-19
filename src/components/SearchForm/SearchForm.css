@@ -32,4 +32,10 @@
   background: url(../../images/search-icon.png) var(--green-background) center no-repeat;
   border: none;
   border-radius: 8px;
+  cursor: pointer;
+  transition: opacity .3s;
 }
+
+.search-form__submit-button:hover {
+  opacity: .3;
+} 
