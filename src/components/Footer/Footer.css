@@ -1,6 +1,8 @@
 .footer {
   background: #fafafa;
   padding: 79px 70px 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .footer__text {

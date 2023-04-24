@@ -1,5 +1,6 @@
 .about-project {
-  padding: 70px 110px;
+  padding: 110px 70px;
+  box-sizing: border-box;
 }
 
 .table {
@@ -52,7 +53,7 @@
 }
 
 .two-columns__heading_left {
-  background: var(--green-button);
+  background: var(--green-background);
 }
 
 .two-columns__heading_right {
