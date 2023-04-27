@@ -13,7 +13,7 @@ import { useState } from 'react';
 
 // TODO не забыть прелоудер!!!!!!!!!
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
   const isHeaderVisible = 
     location.pathname === '/' ||
@@ -27,7 +27,7 @@ function App() {
     location.pathname === '/saved-movies';
 
   return (
-    <div className='App'>
+    <div className='app'>
       {isHeaderVisible && <Header isLoggedIn={isLoggedIn} />}
       <Routes>
         <Route path='/' element={<Content />} />

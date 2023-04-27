@@ -63,3 +63,14 @@
   background: url(../../images/profile-icon.png) #F9F9F9 center no-repeat;
   border-radius: 4px;
 }
+
+@media screen and (max-width: 540px) {
+  .navigation__links_type_auth {
+    gap: 14px;
+    font-size: 10px;
+  }
+
+  .navigation__link_type_login {
+    padding: 5px 12px;
+  }
+}

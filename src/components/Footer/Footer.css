@@ -50,3 +50,9 @@
 .footer__link:hover {
   opacity: .3;
 }
+
+@media screen and (max-width: 768px) {
+  .footer {
+    padding-inline: 30px;
+  }
+}

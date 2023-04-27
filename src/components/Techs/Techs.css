@@ -46,3 +46,18 @@
   color: var(--black-text);
 }
 
+@media screen and (max-width: 768px) {
+  .techs {
+    padding: 90px 50px;
+  }
+
+  .techs__heading {
+    padding-top: 80px;
+  }
+
+  .techs__subheading {
+    padding-top: 22px;
+    font-size: 12px;
+    line-height: 18px;
+  }
+}

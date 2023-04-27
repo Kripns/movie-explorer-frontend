@@ -9,7 +9,7 @@ function Header(props) {
 
   return (
     <header className={headerClassName}>
-      <Link className='header__logo' to={'/'} />
+      <Link className='app__logo' to={'/'} />
       <Navigation isLoggedIn={isLoggedIn} />
     </header>
   );

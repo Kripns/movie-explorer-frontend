@@ -6,7 +6,7 @@ function AuthForm(props) {
 
   return (
     <form className='auth-form'>
-      <Link className='header__logo' to={'/'} />
+      <Link className='app__logo' to={'/'} />
       <h2 className='auth-form__heading'>{headingText}</h2>
       {props.children}
     </form>

@@ -12,10 +12,10 @@ function Navigation(props) {
     <nav className='navigation__menu'>
       {!isLoggedIn ? (
         <div className='navigation__links navigation__links_type_auth'>
-          <Link className={`navigation__link ${linkClassName}`} to='/signin'>
+          <Link className={`navigation__link ${linkClassName}`} to='/signup'>
             Регистрация
           </Link>
-          <Link className='navigation__link navigation__link_type_login' to='login'>
+          <Link className='navigation__link navigation__link_type_login' to='/signin'>
             Войти
           </Link>
         </div>
