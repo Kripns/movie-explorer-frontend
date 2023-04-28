@@ -26,7 +26,6 @@
   font-size: 20px;
   line-height: 24px;
   letter-spacing: -0.04em;
-  
 }
 
 .table__text {
@@ -96,4 +95,47 @@
   .two-columns__text {
     font-weight: 400;
   }
+}
+
+@media screen and (max-width: 540px) {
+  .about-project {
+    padding: 70px 18px;
+  }
+
+  .table {
+    flex-direction: column;
+    gap: 56px;
+    padding: 60px 0;
+  }
+
+  .table__cell {
+    gap: 16px;
+  }
+
+  .table__heading {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .table__text {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .two-columns {
+    grid-template-columns: 100px auto;
+  }
+
+  .two-columns__heading {
+    padding-block: 11px;
+    font-size: 11px;
+    line-height: 13px;
+  }
+
+  .two-columns__text {
+    padding-top: 10px;
+    font-size: 11px;
+    line-height: 13px;
+  }
+
 }

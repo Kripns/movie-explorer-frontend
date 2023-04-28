@@ -61,3 +61,27 @@
     line-height: 18px;
   }
 }
+
+@media screen and (max-width: 540px) {
+  .techs {
+    padding: 70px 18px;
+    background: var(--white-background);
+  }
+
+  .techs__heading {
+    padding-top: 60px;
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  .techs__subheading {
+    padding-top: 24px;
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .techs__list {
+    padding: 50px 53px 0;
+  }
+
+}

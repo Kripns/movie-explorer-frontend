@@ -41,6 +41,8 @@
   height: 17px;
   align-self: center;
   background: url(../../images/link-arrow.png);
+  background-size: cover;
+  background-position: center;
   transition: opacity .3s;
 }
 
@@ -56,4 +58,25 @@
   .portfolio__link-text {
     font-size: 28px;
   }
+}
+
+@media screen and (max-width: 540px) {
+  .portfolio {
+    padding: 0 14px 50px;
+  }
+
+  .portfolio__heading {
+    padding-bottom: 20px;
+    font-size: 14px;
+  }
+
+  .portfolio__link-text {
+    font-size: 18px;
+    line-height: 28px;
+  }
+
+  .portfolio__link-arrow {
+    width: 11px;
+    height: 11px;
+  }  
 }
