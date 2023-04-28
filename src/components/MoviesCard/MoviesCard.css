@@ -35,7 +35,7 @@
   top: 19px;
   right: 14px;
   padding: 0;
-  border-radius: 50px;
+  border-radius: 36px;
   border: none;
   background-color: #f9f9f9;
   cursor: pointer;
@@ -56,4 +56,15 @@
 
 .movies__card-button_delete {
   background: url(../../images/delete-icon.png);
+}
+
+.movies__card-image {
+  min-width: 225px;
+  width: 100%;
+}
+
+@media screen and (max-width: 540px) {
+  .movies__card-list {
+    min-width: 300px;
+  }
 }

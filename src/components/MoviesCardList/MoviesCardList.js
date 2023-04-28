@@ -74,9 +74,8 @@ function MoviesCardList(props) {
       ) : (
         cards.map((item, index) => {
           return (
-            <li>
+            <li key={index}>
               <MoviesCard
-                key={index}
                 card={item}
                 buttonClassName={buttonClassName}
               />

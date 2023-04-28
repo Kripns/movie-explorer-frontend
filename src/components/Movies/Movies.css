@@ -23,3 +23,9 @@
 .movies__button:hover {
   opacity: .3;
 }
+
+@media screen and (max-width: 540px) {
+  .movies__button {
+    width: 240px;
+  }
+}

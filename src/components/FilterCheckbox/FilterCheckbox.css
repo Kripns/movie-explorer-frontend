@@ -41,3 +41,10 @@
   width: 0;
   height: 0;
 }
+
+@media screen and (max-width: 540px) {
+  .checkbox__lable {
+    gap: 13px;
+    font-size: 11px;
+  }
+}
