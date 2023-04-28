@@ -14,6 +14,7 @@
 }
 
 .auth-form__label {
+  width: 100%;
   display: flex;
   flex-direction: column;
   font-weight: 400;
@@ -45,9 +46,13 @@
 }
 
 .auth-form__button {
+  width: 100%;
   height: 45px;
   padding: 0;
   background: var(--green-background);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
   color: var(--white-text);
   border: none;
   border-radius: 3px;
@@ -88,4 +93,47 @@
 
 .auth-form__link:hover {
   opacity: .3;
+}
+
+@media screen and (max-width: 768px) {
+  .auth-form {
+    padding: 232px 0;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .auth-form {
+    width: 260px;
+    align-items: center;
+    padding: 56px 0 30px;
+  }
+
+  .auth-form__heading {
+    padding: 50px 0 80px;
+  }
+
+  .auth-form__button {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .auth-form__button_signup {
+    margin-top: 222px;
+  }
+
+  .auth-form__button_signin {
+    margin-top: 267px;
+  }
+
+  .auth-form__subheading {
+    font-size: 12px;
+    line-height: 15px;
+    padding-top: 14px;
+  }
+
+  .auth-form__link {
+    font-size: 12px;
+    line-height: 15px;
+  }
 }
