@@ -37,3 +37,31 @@
 .error-page__button:hover {
   opacity: .3;
 }
+
+@media screen and (max-width: 768px) {
+  .error-page {
+    padding: 408px 0 222px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .error-page {
+    padding: 329px 0 30px;
+  }
+
+  .error-page__heading {
+    font-size: 80px;
+    line-height: 97px;
+  }
+
+  .error-page__subheading {
+    font-size: 12px;
+    line-height: 15px;
+    padding: 10px 0 284px;  
+  }
+
+  .error-page__button {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}

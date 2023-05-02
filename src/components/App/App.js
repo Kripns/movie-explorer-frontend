@@ -13,7 +13,7 @@ import { useState } from 'react';
 
 // TODO не забыть прелоудер!!!!!!!!!
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const location = useLocation();
   const isHeaderVisible = 
     location.pathname === '/' ||
