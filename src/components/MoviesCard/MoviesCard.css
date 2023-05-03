@@ -47,15 +47,15 @@
 }
 
 .movies__card-button_like {
-  background: url(../../images/like-icon.png);
+  background: url(../../images/like-icon.svg);
 }
 
 .movies__card-button_liked {
-  background: url(../../images/like-icon-active.png);
+  background: url(../../images/like-icon-active.svg);
 }
 
 .movies__card-button_delete {
-  background: url(../../images/delete-icon.png);
+  background: url(../../images/delete-icon.svg);
 }
 
 .movies__card-image {

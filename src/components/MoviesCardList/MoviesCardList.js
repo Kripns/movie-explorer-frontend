@@ -1,72 +1,8 @@
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
-import cardImage from '../../images/card-image.jpg';
-
-const cards = [
-  {
-    name: '33 слова о дизайне',
-    link: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    name: '33 слова о дизайне',
-    link: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    name: '33 слова о дизайне',
-    link: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    name: '33 слова о дизайне',
-    link: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    name: '33 слова о дизайне',
-    link: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    name: '33 слова о дизайне',
-    link: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    name: '33 слова о дизайне',
-    link: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    name: '33 слова о дизайне',
-    link: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    name: '33 слова о дизайне',
-    link: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    name: '33 слова о дизайне',
-    link: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    name: '33 слова о дизайне',
-    link: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    name: '33 слова о дизайне',
-    link: cardImage,
-    duration: '1ч 47м',
-  },
-];
 
 function MoviesCardList(props) {
-  const { buttonClassName } = props;
+  const { cards, buttonClassName } = props;
   return (
     <ul className='movies__card-list'>
       {!cards.length ? (

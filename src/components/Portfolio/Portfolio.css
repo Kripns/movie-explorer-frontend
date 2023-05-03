@@ -40,7 +40,7 @@
   width: 19px;
   height: 17px;
   align-self: center;
-  background: url(../../images/link-arrow.png);
+  background: url(../../images/link-arrow.svg);
   background-size: cover;
   background-position: center;
   transition: opacity .3s;

@@ -6,13 +6,13 @@ function Login() {
     <section className='login'>
       <AuthForm headingText='Рады видеть!'>
         <label className='auth-form__label'>
-          E-mail <input className='auth-form__input' type='email'></input>
+          E-mail <input className='auth-form__input' type='email' name='login-name' required></input>
         </label>
-        <span className='auth-form__error'></span>
+        <span className='auth-form__error login-name-input-error'></span>
         <label className='auth-form__label'>
-          Пароль <input className='auth-form__input' type='password'></input>
+          Пароль <input className='auth-form__input' type='password' name='login-password' required></input>
         </label>
-        <span className='auth-form__error'></span>
+        <span className='auth-form__error login-password-input-error'></span>
         <button
           className='auth-form__button auth-form__button_signin'
           type='submit'

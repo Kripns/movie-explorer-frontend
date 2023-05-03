@@ -2,12 +2,14 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import './Movies.css';
 
-function Movies() {
+function Movies(props) {
+  const { cards } = props;
+
   return(
     <section className='movies'>
       <SearchForm />
       <MoviesCardList 
-        buttonClassName='movies__card-button_like'
+        cards={cards}
       />
       <button className='movies__button'>Ещё</button>
     </section>

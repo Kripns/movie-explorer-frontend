@@ -12,12 +12,12 @@
 }
 
 .burger-menu__button_open {
-  background: url(../../images/burger-menu-open.png) center;
+  background: url(../../images/burger-menu-open.svg) center;
 }
 
 .burger-menu__button_close {
   align-self: flex-end;
-  background: url(../../images/burger-menu-close.png) center;
+  background: url(../../images/burger-menu-close.svg) center;
 }
 
 .burger-menu__overlay {

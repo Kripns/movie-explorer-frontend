@@ -35,7 +35,7 @@
   height: 44px;
   flex-shrink: 0;
   padding: 0;
-  background: url(../../images/search-icon.png) var(--green-background) center no-repeat;
+  background: url(../../images/search-icon.svg) var(--green-background) center no-repeat;
   border: none;
   border-radius: 8px;
   cursor: pointer;

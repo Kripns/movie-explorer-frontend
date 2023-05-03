@@ -1,10 +1,11 @@
 import './Profile.css';
 
 function Profile(props) {
-  const { name, email } = props;
+  const { user } = props;
+  
   return (
     <section className='profile'>
-      <h2 className='profile__heading'>Привет, {name}!</h2>
+      <h2 className='profile__heading'>Привет, {user.name}!</h2>
       <form className='profile__form'>
         <label className='profile__form-label' htmlFor='profile-name'>
         Имя
@@ -12,20 +13,20 @@ function Profile(props) {
             className='profile__form-input'
             id='profile-name'
             type='text'
-            value={name}
-            placeholder='Имя'
+            name='profile-name'
           />
         </label>
+        {/* <span className='profile-form__error profile-name-input-error'></span> */}
         <label className='profile__form-label' htmlFor='profile-email'>
         E-mail
         <input
           className='profile__form-input'
           id='profile-email'
           type='email'
-          value={email}
-          placeholder='E-mail'
+          name='profile-email'
         />
         </label>
+        {/* <span className='profile-form__error profile-email-input-error'></span> */}
         <div className='profile__form-buttons'>
           <button className='profile__form-button profile__form-button_type_edit' type='submit'>Редактировать</button>
           <button className='profile__form-button profile__form-button_type_exit'>Выйти из аккаунта</button>

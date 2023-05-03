@@ -6,17 +6,17 @@ function Register() {
     <section className='register'>
       <AuthForm headingText='Добро пожаловать!'>
         <label className='auth-form__label'>
-          Имя <input className='auth-form__input' type='text'></input>
+          Имя <input className='auth-form__input' type='text' name='name' required></input>
         </label>
-        <span className='auth-form__error'></span>
+        <span className='auth-form__error name-input-error'></span>
         <label className='auth-form__label'>
-          E-mail <input className='auth-form__input' type='email'></input>
+          E-mail <input className='auth-form__input' type='email' name='email' required></input>
         </label>
-        <span className='auth-form__error'></span>
+        <span className='auth-form__error email-input-error'></span>
         <label className='auth-form__label'>
-          Пароль <input className='auth-form__input' type='password'></input>
+          Пароль <input className='auth-form__input' type='password' name='password' required></input>
         </label>
-        <span className='auth-form__error'></span>
+        <span className='auth-form__error password-input-error'></span>
         <button
           className='auth-form__button auth-form__button_signup'
           type='submit'
