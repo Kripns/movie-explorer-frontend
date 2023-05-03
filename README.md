@@ -1,5 +1,5 @@
 
-# movie-explorer-api
+# movie-explorer-frontend
  
 ### [Ссылка на макет](https://disk.yandex.ru/d/q8Env4k-3O-vkQ)
 
