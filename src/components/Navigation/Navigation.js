@@ -29,7 +29,7 @@ function Navigation(props) {
   useEffect(() => setIsBurgerMenuOpen(false), [location.pathname]);
 
   return (
-    <nav className='navigation__menu'>
+    <nav className='navigation'>
       {!isLoggedIn && (
         <div className='navigation__links navigation__links_type_auth'>
           <Link className={`navigation__link ${linkClassName}`} to='/signup'>
