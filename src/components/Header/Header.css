@@ -1,0 +1,24 @@
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 18px 70px;
+  box-sizing: border-box;
+  background: var(--white-background);
+}
+
+.header_place_landing {
+  background: var(--dark-background);
+}
+
+@media screen and (max-width: 768px) {
+  .header {
+    padding: 18px 30px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .header {
+    padding: 18px 14px;
+  }
+}

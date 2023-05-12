@@ -1,0 +1,141 @@
+.about-project {
+  padding: 110px 70px;
+  box-sizing: border-box;
+}
+
+.table {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 70px 0 110px;
+  margin-block: 0;
+  list-style-type: none;
+}
+
+.table__cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 26px;
+  color: var(--black-text);
+}
+
+.table__heading {
+  margin: 0;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.04em;
+}
+
+.table__text {
+  margin: 0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.two-columns {
+  display: grid;
+  grid-template-columns: 228px auto;
+  margin-block: 0;
+  padding-left: 0;
+  list-style-type: none;
+  text-align: center;
+}
+
+.two-columns__heading {
+  margin-block: 0;
+  padding-block: 9px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.two-columns__heading_left {
+  background: var(--green-background);
+}
+
+.two-columns__heading_right {
+  background: #f2f2f2;
+}
+
+.two-columns__text {
+  margin-block: 0;
+  padding-top: 14px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--gray-text);
+}
+
+@media screen and (max-width: 768px) {
+  .about-project {
+    padding: 90px 50px 121px;
+  }
+
+  .table {
+    gap: 30px;
+    padding: 70px 0 93px;
+  }
+
+  .table__cell {
+    gap: 22px;
+  }
+
+  .table__text {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .two-columns {
+    grid-template-columns: 140px auto;
+  }
+
+  .two-columns__text {
+    font-weight: 400;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .about-project {
+    padding: 70px 18px;
+  }
+
+  .table {
+    flex-direction: column;
+    gap: 56px;
+    padding: 60px 0;
+  }
+
+  .table__cell {
+    gap: 16px;
+  }
+
+  .table__heading {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .table__text {
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .two-columns {
+    grid-template-columns: 100px auto;
+  }
+
+  .two-columns__heading {
+    padding-block: 11px;
+    font-size: 11px;
+    line-height: 13px;
+  }
+
+  .two-columns__text {
+    padding-top: 10px;
+    font-size: 11px;
+    line-height: 13px;
+  }
+
+}

@@ -1,0 +1,32 @@
+.movies__card-list {
+  width: 100%;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px 24px;
+  list-style-type: none;
+  margin: 0;
+  padding: 80px 70px;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 865px) {
+  .movies__card-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .movies__card-list {
+    gap: 36px 30px;
+    padding-inline: 30px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .movies__card-list {
+    grid-template-columns: 1fr;
+    row-gap: 16px;
+    padding: 50px 10px 80px;
+  }
+}

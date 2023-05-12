@@ -1,12 +1,6 @@
 
-# movie-explorer-api
+# movie-explorer-frontend
  
-  
-## IP 158.160.62.220
+### [Ссылка на макет](https://disk.yandex.ru/d/q8Env4k-3O-vkQ)
 
-### [Ссылка на сайт](https://movieexp.nomoredomains.work)
-
-### [Ссылка на сервер](https://api.movieexp.nomoredomains.work)
-
-### [Ссылка на репозиторий](https://github.com/Kripns/movies-explorer-api)
-
+### [Ссылка на репозиторий](https://github.com/Kripns/movies-explorer-frontend)
