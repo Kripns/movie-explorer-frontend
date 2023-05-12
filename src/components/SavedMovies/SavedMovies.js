@@ -4,14 +4,18 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 function SavedMovies(props) {
   const { cards } = props;
 
-  return(
+  return (
     <section className='movies movies_place_saved-movies'>
       <SearchForm />
-      <MoviesCardList 
-        cards={cards}
-      />
+      {!cards.length ? (
+        <p className='movies__text'>Фильмы не надены.</p>
+      ) : (
+        <>
+          <MoviesCardList cards={cards} />
+        </>
+      )}
     </section>
-  )
-};
+  );
+}
 
 export default SavedMovies;

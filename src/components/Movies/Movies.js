@@ -3,17 +3,21 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import './Movies.css';
 
 function Movies(props) {
-  const { cards } = props;
+  const { cards, handleSubmit } = props;
 
-  return(
+  return (
     <section className='movies'>
-      <SearchForm />
-      <MoviesCardList 
-        cards={cards}
-      />
-      <button className='movies__button'>Ещё</button>
+      <SearchForm handleSubmit={handleSubmit} />
+      {!cards.length ? (
+        <p className='movies__text'>Фильмы не надены.</p>
+      ) : (
+        <>
+          <MoviesCardList cards={cards} />
+          <button className='movies__button'>Ещё</button>
+        </>
+      )}
     </section>
-  )
+  );
 }
 
 export default Movies;
