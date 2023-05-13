@@ -1,30 +1,29 @@
-import { useState } from 'react';
 import './MoviesCard.css';
-import { useLocation } from 'react-router-dom';
 
 function MoviesCard(props) {
-  const { card } = props;
-  const [isLiked, setIsLiked] = useState(false);
-  const location = useLocation();
-  const buttonClassName = location.pathname === '/saved-movies'
-    ? 'movies__card-button_delete'
-    : isLiked ? 'movies__card-button_liked' : 'movies__card-button_like';
+  const { card, handleButtonClick, cardButtonClassName } = props;
+  // const likeButtonClassName = isLiked
+  //   ? 'movies__card-button_liked'
+  //   : 'movies__card-button_like';
 
-//Имитация работы лайков
-  function handleClick() {
-    return location.pathname === '/movies' ? setIsLiked(!isLiked) : null;
-  }
 
   return (
-    <article className='movies__card' >
+    <article className='movies__card'>
       <div className='movies__card-info'>
         <h2 className='movies__card-heading'>{card.nameRU}</h2>
         <p className='movies__card-duration'>{card.duration}</p>
-        <button
-          className={`movies__card-button ${buttonClassName}`}
-          onClick={handleClick}
-          type='button'
-        />
+          <button
+            className={`movies__card-button ${cardButtonClassName}`}
+            // onClick={handleClick}
+            type='button'
+          />
+        {/* {location.pathname === '/saved-movies' && (
+          <button
+            className='movies__card-button movies__card-button_delete'
+            onClick={handleClick}
+            type='button'
+          />
+        )} */}
       </div>
       <img
         className='movies__card-image'

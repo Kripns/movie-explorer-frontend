@@ -1,16 +1,47 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AuthForm from '../AuthForm/AuthForm';
+import useFormAndValidation from '../../hooks/useFormAndValidation';
 
-function Login() {
+function Login(props) {
+  const { handleSubmit } = props;
+  const { values, errors, isValid, handleChange, resetForm } =
+  useFormAndValidation();
+
+  function handleLogin(e) {
+    e.preventDefault();
+    return handleSubmit(values.email, values.password)
+  }
+
+  useEffect(() => {
+    resetForm()
+  }, []);
+
   return (
     <section className='login'>
-      <AuthForm headingText='Рады видеть!'>
+      <AuthForm headingText='Рады видеть!' handleSubmit={handleLogin}>
         <label className='auth-form__label'>
-          E-mail <input className='auth-form__input' type='email' name='login-name' required></input>
+          E-mail 
+          <input 
+            className='auth-form__input'
+            type='email'
+            name='email'
+            value={values.email || ''}
+            onChange={handleChange}
+            required
+          />
         </label>
         <span className='auth-form__error login-name-input-error'></span>
         <label className='auth-form__label'>
-          Пароль <input className='auth-form__input' type='password' name='login-password' required></input>
+          Пароль 
+          <input
+            className='auth-form__input'
+            type='password'
+            name='password'
+            value={values.password || ''}
+            onChange={handleChange}
+            required
+          />
         </label>
         <span className='auth-form__error login-password-input-error'></span>
         <button

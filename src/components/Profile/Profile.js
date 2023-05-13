@@ -1,8 +1,12 @@
 import './Profile.css';
 
 function Profile(props) {
-  const { user } = props;
+  const { user, handleLogout } = props;
   
+  function handleClick() {
+    handleLogout()
+  }; 
+
   return (
     <section className='profile'>
       <h2 className='profile__heading'>Привет, {user.name}!</h2>
@@ -29,7 +33,7 @@ function Profile(props) {
         {/* <span className='profile-form__error profile-email-input-error'></span> */}
         <div className='profile__form-buttons'>
           <button className='profile__form-button profile__form-button_type_edit' type='submit'>Редактировать</button>
-          <button className='profile__form-button profile__form-button_type_exit'>Выйти из аккаунта</button>
+          <button className='profile__form-button profile__form-button_type_exit' onClick={handleClick}>Выйти из аккаунта</button>
         </div>
       </form>
     </section>
