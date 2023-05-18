@@ -3,16 +3,21 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import './Movies.css';
 
 function Movies(props) {
-  const { cards, handleSearchSubmit, handleButtonClick, cardButtonClassName } = props;
+  const { handleSearchSubmit, moviesToRender, savedMovies, handleSaveMovie, handleDeleteMovie } = props;
 
   return (
     <section className='movies'>
       <SearchForm handleSubmit={handleSearchSubmit} />
-      {!cards.length ? (
+      {!moviesToRender.length ? (
         <p className='movies__text'>Фильмы не надены.</p>
       ) : (
         <>
-          <MoviesCardList cards={cards} handleButtonClick={handleButtonClick} cardButtonClassName={cardButtonClassName} />
+          <MoviesCardList
+            moviesToRender={moviesToRender}
+            savedMovies={savedMovies}
+            handleSaveMovie={handleSaveMovie}
+            handleDeleteMovie={handleDeleteMovie}
+          />
           <button className='movies__button'>Ещё</button>
         </>
       )}

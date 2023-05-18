@@ -3,8 +3,8 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import { useEffect } from 'react';
 
 function SavedMovies(props) {
-  const { cards, handleSearchSubmit, updateSavedMovies } = props;
-
+  const { moviesToRender, savedMovies, handleSearchSubmit, updateSavedMovies, handleDeleteMovie } = props;
+  
   useEffect(() => {
     updateSavedMovies()
   }, [])
@@ -12,11 +12,11 @@ function SavedMovies(props) {
   return (
     <section className='movies movies_place_saved-movies'>
       <SearchForm handleSubmit={handleSearchSubmit} />
-      {!cards.length ? (
+      {!savedMovies.length ? (
         <p className='movies__text'>Фильмы не надены.</p>
       ) : (
         <>
-          <MoviesCardList cards={cards} />
+          <MoviesCardList  moviesToRender={moviesToRender} savedMovies={savedMovies} handleDeleteMovie={handleDeleteMovie} />
         </>
       )}
     </section>
