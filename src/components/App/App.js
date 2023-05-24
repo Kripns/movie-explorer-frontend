@@ -23,6 +23,7 @@ import {
   getSavedMovies,
 } from '../../utils/MainApi';
 
+import filterMovies from '../../utils/functions';
 
 function App() {
   // Переменные состояния
@@ -30,9 +31,10 @@ function App() {
   const [allMovies, setAllMovies] = useState([]);
   const [moviesToRender, setMoviesToRender] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
-  const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);
+  // const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isInit, setIsInit] = useState(false);
 
   const apiUrl = 'https://api.nomoreparties.co';
 
@@ -51,7 +53,7 @@ function App() {
     location.pathname === '/saved-movies';
 
   function updateSavedMovies() {
-    setFilteredSavedMovies([])
+    // setFilteredSavedMovies([])
     setIsLoading(true);
     return getSavedMovies()
       .then(movies => {
@@ -98,17 +100,6 @@ function App() {
     navigate('/signin');
   }
 
-  function filterMovies(movies, searchValue, checkboxValue) {
-    const foundMovies = movies.filter(movie =>
-      movie['nameRU'].toLowerCase().includes(searchValue.toLowerCase())
-    );
-    const filteredMovies = checkboxValue
-      ? foundMovies.filter(movie => Number(movie.duration) <= 40)
-      : foundMovies;
-    
-    return filteredMovies;
-  }
-
   function renderMovies(movies, searchValue, checkboxValue) {
     const filteredMovies = filterMovies(movies, searchValue, checkboxValue);
       setMoviesToRender(filteredMovies.map(movie => {
@@ -145,11 +136,7 @@ function App() {
     }
   }
 
-  function handleSearchSavedMovies(searchValue, checkboxValue) {
-    // const filteredMovies = filterMovies(savedMovies, searchValue, checkboxValue);
-     setFilteredSavedMovies(filterMovies(savedMovies, searchValue, checkboxValue));
-    //  console.log('filteredSavedMovies1', filteredSavedMovies)
-  }
+  
 
   function handleSaveMovie({ nameRU, nameEN, country, duration, director, year, description, image, trailerLink, thumbnail, movieId }) {
     setIsLoading(true);
@@ -170,9 +157,9 @@ function App() {
         setSavedMovies(state =>
           state.filter(item => item._id !== removedMovie._id)
         );
-        setFilteredSavedMovies(state =>
-          state.filter(item => item._id !== removedMovie._id)
-        );
+        // setFilteredSavedMovies(state =>
+        //   state.filter(item => item._id !== removedMovie._id)
+        // );
       })
       .catch(err => console.log(err))
       .finally(() => setIsLoading(false));
@@ -193,15 +180,17 @@ function App() {
       })
       .catch(err => {
         console.log(err);
-      });
+      })
+      .finally(() => setIsInit(true));
   }, []);
 
   useEffect(() => {
     isLoggedIn && updateSavedMovies()
   }, [isLoggedIn]);
 
+
   return (
-    <CurrentUserContext.Provider value={currentUser}>
+    isInit && <CurrentUserContext.Provider value={currentUser}>
       <div className='app'>
         {isHeaderVisible && <Header isLoggedIn={isLoggedIn} />}
         <Routes>
@@ -211,9 +200,8 @@ function App() {
             element={
               <ProtectedRoute isLoggedIn={isLoggedIn}>
                 <Movies
-                  moviesToRender={moviesToRender}
+                  foundMovies={moviesToRender}
                   savedMovies={savedMovies}
-                  filteredSavedMovies={filteredSavedMovies}
                   handleSearchSubmit={handleSearchMovies}
                   handleSaveMovie={handleSaveMovie}
                   handleDeleteMovie={handleDeleteMovie}
@@ -229,8 +217,6 @@ function App() {
                 <SavedMovies
                   moviesToRender={moviesToRender}
                   savedMovies={savedMovies}
-                  filteredSavedMovies={filteredSavedMovies}
-                  handleSearchSubmit={handleSearchSavedMovies}
                   handleDeleteMovie={handleDeleteMovie}
                   updateSavedMovies={updateSavedMovies}
                   isLoading={isLoading}

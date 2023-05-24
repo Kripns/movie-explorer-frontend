@@ -1,11 +1,12 @@
 import './SearchForm.css';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
-import { useState } from 'react';
+import {  useState } from 'react';
 
 function SearchForm(props) {
   const { handleSubmit } = props;
   const [value, setValue] = useState('');
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+
 
   function handleFormSubmit(e) {
     e.preventDefault();

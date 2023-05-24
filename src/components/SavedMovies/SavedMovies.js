@@ -1,42 +1,50 @@
+import { useEffect, useState } from 'react';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
-import { useEffect, useState } from 'react';
+import filterMovies from '../../utils/functions';
+
 
 function SavedMovies(props) {
   const {
     moviesToRender,
     savedMovies,
-    filteredSavedMovies,
-    handleSearchSubmit,
     updateSavedMovies,
     handleDeleteMovie,
     isLoading
   } = props;
-  
+
+  const [searchValue, setSearchValue] = useState('');
+  const [checkboxValue, setCheckboxValue] = useState(false);
+  const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);
+  const [savedMoviesToRender, setSavedMoviesToRender] = useState([]);
   const [nothingFound, setNothingFound] = useState(false);
 
-  function handleSubmit(value, checkboxValue) {
-    handleSearchSubmit(value, checkboxValue);
-    setNothingFound(!filteredSavedMovies.length);
-    console.log('nothingFound1', nothingFound)
-    console.log('filteredSavedMovies1', filteredSavedMovies)
+  function handleSearchMovies(value, checkboxValue) {
+    setSearchValue(value);
+    setCheckboxValue(checkboxValue);
   }
 
   useEffect(() => {
     updateSavedMovies();
+    setSavedMoviesToRender(savedMovies)
+    setFilteredSavedMovies([]);
     setNothingFound(false);
   }, [])
 
-  // useEffect(() => {
-  //   setNothingFound(!filteredSavedMovies.length)
-  // }, [filteredSavedMovies.length])
+  useEffect(() => {
+    setFilteredSavedMovies(filterMovies(savedMovies, searchValue, checkboxValue))
+  }, [savedMovies, searchValue, checkboxValue])
 
-  // console.log('nothingFound2', nothingFound)
+  
+  useEffect(() => {
+    setSavedMoviesToRender((filteredSavedMovies.length && filteredSavedMovies) || savedMovies);
+  }, [filteredSavedMovies, savedMovies]);
+  
 
   return (
     <section className='movies movies_place_saved-movies'>
-      <SearchForm handleSubmit={handleSubmit} />
+      <SearchForm handleSubmit={handleSearchMovies} />
       {
       isLoading ? <Preloader />
       : nothingFound ? <p className='movies__text'>Ничего не найдено.</p>
@@ -44,6 +52,7 @@ function SavedMovies(props) {
           movies={moviesToRender}
           savedMovies={savedMovies}
           filteredSavedMovies={filteredSavedMovies}
+          savedMoviesToRender={savedMoviesToRender}
           handleDeleteMovie={handleDeleteMovie}
         />
       }
