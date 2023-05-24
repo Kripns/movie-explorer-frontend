@@ -28,6 +28,11 @@
   opacity: .3;
 }
 
+.movies__button_disabled {
+  visibility: hidden;
+  cursor: default;
+}
+
 .movies__text {
   margin: 0;
   padding: 100px 0;

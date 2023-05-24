@@ -10,7 +10,8 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import Footer from '../Footer/Footer';
 import ErrorPage from '../ErrorPage/ErrorPage';
-import Preloader from '../Preloader/Preloader';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+// import Preloader from '../Preloader/Preloader';
 import getMovies from '../../utils/MoviesApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import {
@@ -29,6 +30,7 @@ function App() {
   const [allMovies, setAllMovies] = useState([]);
   const [moviesToRender, setMoviesToRender] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
+  const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -49,12 +51,11 @@ function App() {
     location.pathname === '/saved-movies';
 
   function updateSavedMovies() {
+    setFilteredSavedMovies([])
     setIsLoading(true);
     return getSavedMovies()
       .then(movies => {
         setSavedMovies(movies)
-        // console.log('saved', savedMovies)
-        // console.log('movies', movies)
       })
       .catch(err => console.log(err))
       .finally(() => setIsLoading(false));
@@ -97,45 +98,47 @@ function App() {
     navigate('/signin');
   }
 
-  function searchMovies(movies, searchValue, checkboxValue) {
+  function filterMovies(movies, searchValue, checkboxValue) {
     const foundMovies = movies.filter(movie =>
       movie['nameRU'].toLowerCase().includes(searchValue.toLowerCase())
     );
     const filteredMovies = checkboxValue
       ? foundMovies.filter(movie => Number(movie.duration) <= 40)
       : foundMovies;
+    
+    return filteredMovies;
+  }
 
-    setMoviesToRender(filteredMovies.map(movie => {
-      return {
-        nameRU: movie.nameRU,
-        nameEN: movie.nameEN,
-        country: movie.country,
-        duration: movie.duration,
-        director: movie.director,
-        year: movie.year,
-        description: movie.description,
-        image: `${apiUrl}${movie.image.url}`,
-        trailerLink: movie.trailerLink,
-        thumbnail: `${apiUrl}${movie.image.formats.thumbnail.url}`,
-        id: movie.id,
-        movieId: movie.id,
-        // isSaved: savedMovies.some(m => m.movieId === movie.id)
-      };
-    }))
-    console.log('moviesToRender', moviesToRender)
-    console.log('savedMovies', savedMovies)
+  function renderMovies(movies, searchValue, checkboxValue) {
+    const filteredMovies = filterMovies(movies, searchValue, checkboxValue);
+      setMoviesToRender(filteredMovies.map(movie => {
+        return {
+          nameRU: movie.nameRU,
+          nameEN: movie.nameEN,
+          country: movie.country,
+          duration: movie.duration,
+          director: movie.director,
+          year: movie.year,
+          description: movie.description,
+          image: `${apiUrl}${movie.image.url}`,
+          trailerLink: movie.trailerLink,
+          thumbnail: `${apiUrl}${movie.image.formats.thumbnail.url}`,
+          id: movie.id,
+          movieId: movie.id,
+        };
+      }))
   }
 
   function handleSearchMovies(searchValue, checkboxValue) {
     if (allMovies.length) { 
-      return searchMovies(allMovies, searchValue, checkboxValue)
+      return renderMovies(allMovies, searchValue, checkboxValue);
     }
     else {
       setIsLoading(true);
       return getMovies()
         .then(movies => {
           setAllMovies(movies);
-          searchMovies(movies, searchValue, checkboxValue)
+          renderMovies(movies, searchValue, checkboxValue)
         })
         .catch(err => console.log(err))
         .finally(() => setIsLoading(false));
@@ -143,14 +146,9 @@ function App() {
   }
 
   function handleSearchSavedMovies(searchValue, checkboxValue) {
-    const foundMovies = savedMovies.filter(movie =>
-      movie['nameRU'].toLowerCase().includes(searchValue.toLowerCase())
-    );
-    const filteredMovies = checkboxValue
-      ? foundMovies.filter(movie => Number(movie.duration) <= 40)
-      : foundMovies;
-
-    return setSavedMovies(filteredMovies);
+    // const filteredMovies = filterMovies(savedMovies, searchValue, checkboxValue);
+     setFilteredSavedMovies(filterMovies(savedMovies, searchValue, checkboxValue));
+    //  console.log('filteredSavedMovies1', filteredSavedMovies)
   }
 
   function handleSaveMovie({ nameRU, nameEN, country, duration, director, year, description, image, trailerLink, thumbnail, movieId }) {
@@ -170,6 +168,9 @@ function App() {
     deleteMovie(movieToDelete._id)
       .then(removedMovie => {
         setSavedMovies(state =>
+          state.filter(item => item._id !== removedMovie._id)
+        );
+        setFilteredSavedMovies(state =>
           state.filter(item => item._id !== removedMovie._id)
         );
       })
@@ -208,30 +209,42 @@ function App() {
           <Route
             path='/movies'
             element={
-              <Movies
-                moviesToRender={moviesToRender}
-                savedMovies={savedMovies}
-                handleSearchSubmit={handleSearchMovies}
-                handleSaveMovie={handleSaveMovie}
-                handleDeleteMovie={handleDeleteMovie}
-              />
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Movies
+                  moviesToRender={moviesToRender}
+                  savedMovies={savedMovies}
+                  filteredSavedMovies={filteredSavedMovies}
+                  handleSearchSubmit={handleSearchMovies}
+                  handleSaveMovie={handleSaveMovie}
+                  handleDeleteMovie={handleDeleteMovie}
+                  isLoading={isLoading}
+                />
+              </ProtectedRoute>
             }
           />
           <Route
             path='/saved-movies'
             element={
-              <SavedMovies
-                moviesToRender={moviesToRender}
-                savedMovies={savedMovies}
-                handleSearchSubmit={handleSearchSavedMovies}
-                handleDeleteMovie={handleDeleteMovie}
-                updateSavedMovies={updateSavedMovies}
-              />
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <SavedMovies
+                  moviesToRender={moviesToRender}
+                  savedMovies={savedMovies}
+                  filteredSavedMovies={filteredSavedMovies}
+                  handleSearchSubmit={handleSearchSavedMovies}
+                  handleDeleteMovie={handleDeleteMovie}
+                  updateSavedMovies={updateSavedMovies}
+                  isLoading={isLoading}
+                />
+              </ProtectedRoute>
             }
           />
           <Route
             path='/profile'
-            element={<Profile user={currentUser} handleLogout={handleLogout} />}
+            element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Profile user={currentUser} handleLogout={handleLogout} />
+              </ProtectedRoute>
+            }
           />
           <Route
             path='/signup'
@@ -244,7 +257,6 @@ function App() {
           <Route path='/*' element={<ErrorPage />} />
         </Routes>
         {isFooterVisible && <Footer />}
-        {isLoading && <Preloader />}
       </div>
     </CurrentUserContext.Provider>
   );

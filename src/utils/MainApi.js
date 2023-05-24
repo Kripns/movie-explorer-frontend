@@ -94,22 +94,3 @@ export function deleteMovie(movieId) {
     },
   });
 }
-
-
-export function changeLikeCardStatus(cardId, isLiked) {
-  return request(`${ApiConfig.url}/movies/${cardId}`, {
-    method: `${isLiked ? 'DELETE' : 'PUT'}`,
-    credentials: 'include',
-    headers: ApiConfig.headers,
-  });
-}
-
-
-export function updateAvatar(avatar) {
-  return request(`${ApiConfig.url}/users/me/avatar`, {
-    method: 'PATCH',
-    credentials: 'include',
-    headers: ApiConfig.headers,
-    body: JSON.stringify(avatar),
-  });
-}

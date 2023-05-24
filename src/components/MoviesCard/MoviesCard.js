@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router';
 import './MoviesCard.css';
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 
 function MoviesCard(props) {
   const { card, savedMovies, handleSaveMovie, handleDeleteMovie } = props;
@@ -45,11 +46,13 @@ function MoviesCard(props) {
           />
         )}
       </div>
-      <img
-        className='movies__card-image'
-        src={card.image}
-        alt={card.nameRU}
-      />
+      <Link to={card.trailerLink} target='_blank'>
+        <img
+          className='movies__card-image'
+          src={card.image}
+          alt={card.nameRU}
+        />
+      </Link>
     </article>
   );
 }
