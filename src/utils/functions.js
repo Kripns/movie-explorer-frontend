@@ -5,7 +5,7 @@ export function filterMovies(movies, searchValue, checkboxValue) {
   const filteredMovies = checkboxValue
     ? foundMovies.filter(movie => Number(movie.duration) <= 40)
     : foundMovies;
-  
+
   return filteredMovies;
 }
 

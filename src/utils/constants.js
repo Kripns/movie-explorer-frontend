@@ -1,8 +1,9 @@
 export const apiUrl = 'https://api.nomoreparties.co';
 
 export const resErrors = {
-  profile200: 'Данные изменены.',
+  emptySearch: 'Нужно ввести ключевое слово',
   nothingFound: 'Ничего не найдено',
+  profile200: 'Данные изменены.',
   badLogin: 'Вы ввели неправильный логин или пароль.',
   badToken: 'При авторизации произошла ошибка. Переданный токен некорректен.',
   registerError: 'При регистрации пользователя произошла ошибка.',

@@ -56,7 +56,7 @@ function App() {
       .then(movies => {
         setSavedMovies(movies);
       })
-      .catch(err => console.log(err))
+      .catch(err => setResStatus(err))
       .finally(() => setIsLoading(false));
   }
 
@@ -80,7 +80,8 @@ function App() {
     return login(email, password)
       .then(res => {
         if (res.token) {
-          setCurrentUser(res);
+          const { name, email, _id } = res;
+          setCurrentUser({ name, email, _id });
           setIsLoggedIn(true);
           navigate('/movies');
         }
@@ -89,10 +90,11 @@ function App() {
   }
 
   function handleLogout() {
-    localStorage.removeItem('jwt');
+    localStorage.clear();
     setCurrentUser({});
     setAllMovies([]);
     setSavedMovies([]);
+    setMoviesToRender([]);
     setIsLoggedIn(false);
     navigate('/signin');
   }
@@ -102,16 +104,16 @@ function App() {
     setIsLoading(true);
     return editProfile({ name, email })
       .then(updatedUser => {
-        setCurrentUser(updatedUser)
-        setResStatus('ok')
+        setCurrentUser(updatedUser);
+        setResStatus('ok');
       })
       .catch(err => setResStatus(err))
       .finally(() => {
-        setIsLoading(false)
+        setIsLoading(false);
       });
   }
 
-  function renderMovies(movies, searchValue, checkboxValue) {
+  function prepareMoviesToRender(movies, searchValue, checkboxValue) {
     const filteredMovies = filterMovies(movies, searchValue, checkboxValue);
     setMoviesToRender(
       filteredMovies.map(movie => {
@@ -131,19 +133,32 @@ function App() {
         };
       })
     );
+
+    !filteredMovies.length ? setResStatus('nothingFound') : setResStatus(false);
+
+    localStorage.setItem('search', searchValue);
+    localStorage.setItem('checkbox', checkboxValue);
+    localStorage.setItem('movies', JSON.stringify(movies));
   }
 
   function handleSearchMovies(searchValue, checkboxValue) {
+    if (!searchValue.length) {
+      setResStatus('emptySearch');
+      return;
+    }
     if (allMovies.length) {
-      return renderMovies(allMovies, searchValue, checkboxValue);
+      return prepareMoviesToRender(allMovies, searchValue, checkboxValue);
     } else {
       setIsLoading(true);
       return getMovies()
         .then(movies => {
+          // setAllMovies(JSON.parse(localStorage.getItem('movies')));
           setAllMovies(movies);
-          renderMovies(movies, searchValue, checkboxValue);
+          // setSearchValue(searchValue);
+          // setCheckboxValue(checkboxValue);
+          prepareMoviesToRender(movies, searchValue, checkboxValue);
         })
-        .catch(err => console.log(err))
+        .catch(err => setResStatus(err))
         .finally(() => setIsLoading(false));
     }
   }
@@ -178,7 +193,7 @@ function App() {
       .then(newMovie => {
         setSavedMovies([newMovie, ...savedMovies]);
       })
-      .catch(err => console.log(err))
+      .catch(err => setResStatus(err))
       .finally(() => setIsLoading(false));
   }
 
@@ -192,15 +207,15 @@ function App() {
           state.filter(item => item._id !== removedMovie._id)
         );
       })
-      .catch(err => console.log(err))
+      .catch(err => setResStatus(err))
       .finally(() => setIsLoading(false));
   }
 
   useEffect(() => {
     if (!localStorage.getItem('jwt')) {
-      setIsInit(true);  
-      return
-    };
+      setIsInit(true);
+      return;
+    }
     checkToken()
       .then(res => {
         if (res) {
@@ -222,71 +237,73 @@ function App() {
     isLoggedIn && updateSavedMovies();
   }, [isLoggedIn]);
 
-
-  return isInit ?
-      ( <CurrentUserContext.Provider value={currentUser}>
-        <div className='app'>
-          {isHeaderVisible && <Header isLoggedIn={isLoggedIn} />}
-          <Routes>
-            <Route path='/' element={<Content />} />
-            <Route
-              path='/movies'
-              element={
-                <ProtectedRoute isLoggedIn={isLoggedIn}>
-                  <Movies
-                    foundMovies={moviesToRender}
-                    savedMovies={savedMovies}
-                    handleSearchSubmit={handleSearchMovies}
-                    handleSaveMovie={handleSaveMovie}
-                    handleDeleteMovie={handleDeleteMovie}
-                    isLoading={isLoading}
-                  />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path='/saved-movies'
-              element={
-                <ProtectedRoute isLoggedIn={isLoggedIn}>
-                  <SavedMovies
-                    moviesToRender={moviesToRender}
-                    savedMovies={savedMovies}
-                    handleDeleteMovie={handleDeleteMovie}
-                    updateSavedMovies={updateSavedMovies}
-                    isLoading={isLoading}
-                  />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path='/profile'
-              element={
-                <ProtectedRoute isLoggedIn={isLoggedIn}>
-                  <Profile
-                    handleLogout={handleLogout}
-                    handleFormSubmit={handleUpdateProfile}
-                    isLoading={isLoading}
-                    resStatus={resStatus}
-                  />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path='/signup'
-              element={<Register handleSubmit={handleRegister} resStatus={resStatus} />}
-            />
-            <Route
-              path='/signin'
-              element={<Login handleSubmit={handleLogin} resStatus={resStatus} />}
-            />
-            <Route path='/*' element={<ErrorPage />} />
-          </Routes>
-          {isFooterVisible && <Footer />}
-        </div>
-      </CurrentUserContext.Provider>
-    
-    
-  ) : null
+  return isInit ? (
+    <CurrentUserContext.Provider value={currentUser}>
+      <div className='app'>
+        {isHeaderVisible && <Header isLoggedIn={isLoggedIn} />}
+        <Routes>
+          <Route path='/' element={<Content />} />
+          <Route
+            path='/movies'
+            element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Movies
+                  foundMovies={moviesToRender}
+                  savedMovies={savedMovies}
+                  handleSearchSubmit={handleSearchMovies}
+                  handleSaveMovie={handleSaveMovie}
+                  handleDeleteMovie={handleDeleteMovie}
+                  isLoading={isLoading}
+                  prepareMoviesToRender={prepareMoviesToRender}
+                  resStatus={resStatus}
+                />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/saved-movies'
+            element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <SavedMovies
+                  moviesToRender={moviesToRender}
+                  savedMovies={savedMovies}
+                  handleDeleteMovie={handleDeleteMovie}
+                  updateSavedMovies={updateSavedMovies}
+                  isLoading={isLoading}
+                  resStatus={resStatus}
+                />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/profile'
+            element={
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Profile
+                  handleLogout={handleLogout}
+                  handleFormSubmit={handleUpdateProfile}
+                  isLoading={isLoading}
+                  resStatus={resStatus}
+                />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/signup'
+            element={
+              <Register handleSubmit={handleRegister} resStatus={resStatus} />
+            }
+          />
+          <Route
+            path='/signin'
+            element={<Login handleSubmit={handleLogin} resStatus={resStatus} />}
+          />
+          <Route path='/*' element={<ErrorPage />} />
+        </Routes>
+        {isFooterVisible && <Footer />}
+      </div>
+    </CurrentUserContext.Provider>
+  ) : null;
 }
 
 export default App;

@@ -14,11 +14,15 @@ function Movies(props) {
     handleSaveMovie,
     handleDeleteMovie,
     isLoading,
+    prepareMoviesToRender,
+    resStatus
   } = props;
 
-  const [nothingFound, setNothingFound] = useState(false);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [page, setPage] = useState(1);
+  const [searchValue, setSearchValue] = useState(null);
+  const [checkboxValue, setCheckboxValue] = useState(null);
+  const [statusMessage, setStatusMessage] = useState(false);
 
   const handleResize = useCallback(
     debounce(() => {
@@ -38,6 +42,26 @@ function Movies(props) {
   }, []);
 
   useEffect(() => {
+    const localMovies = JSON.parse(localStorage.getItem('movies'));
+    const localCheckbox = JSON.parse(localStorage.getItem('checkbox'));
+    const localSearch = localStorage.getItem('search');
+
+    if(localSearch !== null) {
+      setSearchValue(localSearch)
+      setCheckboxValue(localCheckbox)
+      return prepareMoviesToRender(localMovies, localSearch, localCheckbox);
+    }
+  }, []);
+
+  useEffect(() => {
+    setSearchValue(localStorage.getItem('search', searchValue));
+  }, [searchValue]);
+
+  useEffect(() => {
+    setCheckboxValue(JSON.parse(localStorage.getItem('checkbox', checkboxValue)));
+  }, [checkboxValue]);
+
+  useEffect(() => {
     window.addEventListener('resize', handleResize);
 
     return () => {
@@ -46,15 +70,21 @@ function Movies(props) {
   }, []);
 
   useEffect(() => {
-    setNothingFound(!foundMovies.length)
-  }, [foundMovies])
+    resStatus === 'emptySearch'
+    ? setStatusMessage(resErrors.emptySearch)
+    : resStatus === 'nothingFound'
+    ? setStatusMessage(resErrors.nothingFound)
+    : setStatusMessage(resErrors.error500)
+    if(!resStatus) { setStatusMessage(false) };
+  }, [resStatus, searchValue]);
+
 
   return (
     <section className='movies'>
-      <SearchForm handleSubmit={handleSearchSubmit} />
+      <SearchForm handleSubmit={handleSearchSubmit} searchValue={searchValue} checkboxValue={checkboxValue} />
       {
       isLoading ? <Preloader />
-      : nothingFound ? <p className='movies__error'>{resErrors.nothingFound}</p>
+      : resStatus ? <p className='movies__error'>{statusMessage}</p>
       : <>
           <MoviesCardList
             movies={cardsToRender}
@@ -63,13 +93,10 @@ function Movies(props) {
             handleDeleteMovie={handleDeleteMovie}
           />
           <button
-              className={`movies__button ${
-                foundMovies.length === cardsToRender.length &&
-                'movies__button_disabled'
-              }`}
-              onClick={handleMoreClick}
-            >
-              Ещё
+            className={`movies__button ${foundMovies.length === cardsToRender.length && 'movies__button_disabled'}`}
+            onClick={handleMoreClick}
+          >
+            Ещё
           </button>
         </>
         

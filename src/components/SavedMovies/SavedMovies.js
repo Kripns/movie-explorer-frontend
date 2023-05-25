@@ -12,7 +12,8 @@ function SavedMovies(props) {
     savedMovies,
     updateSavedMovies,
     handleDeleteMovie,
-    isLoading
+    isLoading,
+    resStatus,
   } = props;
 
   const [searchValue, setSearchValue] = useState('');
@@ -20,6 +21,7 @@ function SavedMovies(props) {
   const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);
   const [savedMoviesToRender, setSavedMoviesToRender] = useState([]);
   const [nothingFound, setNothingFound] = useState(false);
+  const [statusMessage, setStatusMessage] = useState(false);
 
   function handleSearchMovies(value, checkboxValue) {
     setSearchValue(value);
@@ -41,6 +43,18 @@ function SavedMovies(props) {
   useEffect(() => {
     setSavedMoviesToRender((filteredSavedMovies.length && filteredSavedMovies) || savedMovies);
   }, [filteredSavedMovies, savedMovies]);
+
+  useEffect(() => {
+    setNothingFound(!filteredSavedMovies.length)
+  }, [filteredSavedMovies.length])
+
+  useEffect(() => {
+    resStatus
+    ? setStatusMessage(resErrors.error500)
+    : nothingFound
+    ? setStatusMessage(resErrors.nothingFound)
+    : setStatusMessage(false)
+  }, [resStatus, nothingFound]);
   
 
   return (
@@ -48,7 +62,7 @@ function SavedMovies(props) {
       <SearchForm handleSubmit={handleSearchMovies} />
       {
       isLoading ? <Preloader />
-      : nothingFound ? <p className='movies__error'>{resErrors.nothingFound}</p>
+      : statusMessage ? <p className='movies__error'>{statusMessage}</p>
       : <MoviesCardList
           movies={moviesToRender}
           savedMovies={savedMovies}
