@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
-import filterMovies from '../../utils/functions';
+import { filterMovies } from '../../utils/functions';
+import { resErrors } from '../../utils/constants';
 
 
 function SavedMovies(props) {
@@ -47,7 +48,7 @@ function SavedMovies(props) {
       <SearchForm handleSubmit={handleSearchMovies} />
       {
       isLoading ? <Preloader />
-      : nothingFound ? <p className='movies__text'>Ничего не найдено.</p>
+      : nothingFound ? <p className='movies__error'>{resErrors.nothingFound}</p>
       : <MoviesCardList
           movies={moviesToRender}
           savedMovies={savedMovies}

@@ -1,10 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AuthForm from '../AuthForm/AuthForm';
 import useFormAndValidation from '../../hooks/useFormAndValidation';
+import { resErrors } from '../../utils/constants';
 
 function Login(props) {
-  const { handleSubmit } = props;
+  const { handleSubmit, resStatus } = props;
+  const [statusMessage, setStatusMessage] = useState(false);
   const { values, errors, isValid, handleChange, resetForm } =
   useFormAndValidation();
 
@@ -16,6 +18,15 @@ function Login(props) {
   useEffect(() => {
     resetForm()
   }, []);
+
+  useEffect(() => {
+    resStatus === `Ошибка: 400`
+    ? setStatusMessage(resErrors.badLogin)
+    : resStatus === `Ошибка: 401`
+    ? setStatusMessage(resErrors.badToken)
+    : setStatusMessage(resErrors.error500)
+    if(!resStatus) { setStatusMessage(false) };
+  }, [resStatus]);
 
   return (
     <section className='login'>
@@ -31,7 +42,7 @@ function Login(props) {
             required
           />
         </label>
-        <span className='auth-form__error login-name-input-error'></span>
+        <span className={`auth-form__error email-input-error ${!isValid && 'auth-form__error_visible'}`}>{errors.email}</span>
         <label className='auth-form__label'>
           Пароль 
           <input
@@ -43,10 +54,12 @@ function Login(props) {
             required
           />
         </label>
-        <span className='auth-form__error login-password-input-error'></span>
+        <span className={`auth-form__error password-input-error ${!isValid && 'auth-form__error_visible'}`}>{errors.password}</span>
+        <p className={`auth-form__status-message ${statusMessage && 'auth-form__status-message_visible'}`}>{statusMessage}</p>
         <button
-          className='auth-form__button auth-form__button_signin'
+          className={`auth-form__button auth-form__button_signin ${!isValid && 'auth-form__button_disabled'}`}
           type='submit'
+          disabled={!isValid}
         >
           Войти
         </button>

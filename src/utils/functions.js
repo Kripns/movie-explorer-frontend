@@ -1,4 +1,4 @@
-export default function filterMovies(movies, searchValue, checkboxValue) {
+export function filterMovies(movies, searchValue, checkboxValue) {
   const foundMovies = movies.filter(movie =>
     movie['nameRU'].toLowerCase().includes(searchValue.toLowerCase())
   );
@@ -7,4 +7,12 @@ export default function filterMovies(movies, searchValue, checkboxValue) {
     : foundMovies;
   
   return filteredMovies;
+}
+
+export function debounce(func, timeout = 300) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => { func.apply(this, args); }, timeout);
+  };
 }

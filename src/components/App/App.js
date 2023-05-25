@@ -11,19 +11,19 @@ import Login from '../Login/Login';
 import Footer from '../Footer/Footer';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-// import Preloader from '../Preloader/Preloader';
 import getMovies from '../../utils/MoviesApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import {
   register,
   login,
+  editProfile,
   checkToken,
   saveMovie,
   deleteMovie,
   getSavedMovies,
 } from '../../utils/MainApi';
-
-import filterMovies from '../../utils/functions';
+import { filterMovies } from '../../utils/functions';
+import { apiUrl } from '../../utils/constants';
 
 function App() {
   // Переменные состояния
@@ -31,12 +31,10 @@ function App() {
   const [allMovies, setAllMovies] = useState([]);
   const [moviesToRender, setMoviesToRender] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
-  // const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [resStatus, setResStatus] = useState(false);
   const [isInit, setIsInit] = useState(false);
-
-  const apiUrl = 'https://api.nomoreparties.co';
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -53,11 +51,10 @@ function App() {
     location.pathname === '/saved-movies';
 
   function updateSavedMovies() {
-    // setFilteredSavedMovies([])
     setIsLoading(true);
     return getSavedMovies()
       .then(movies => {
-        setSavedMovies(movies)
+        setSavedMovies(movies);
       })
       .catch(err => console.log(err))
       .finally(() => setIsLoading(false));
@@ -72,10 +69,10 @@ function App() {
         if (res) {
           handleLogin(email, password);
         } else {
-          Promise.reject(new Error(`Произошла ошибка ${res.status}`));
+          Promise.reject(new Error(`Ошибка: ${res.status}`));
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => setResStatus(err));
   }
 
   function handleLogin(email, password) {
@@ -88,7 +85,7 @@ function App() {
           navigate('/movies');
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => setResStatus(err));
   }
 
   function handleLogout() {
@@ -100,9 +97,24 @@ function App() {
     navigate('/signin');
   }
 
+  function handleUpdateProfile(name, email) {
+    if (!name || !email) return;
+    setIsLoading(true);
+    return editProfile({ name, email })
+      .then(updatedUser => {
+        setCurrentUser(updatedUser)
+        setResStatus('ok')
+      })
+      .catch(err => setResStatus(err))
+      .finally(() => {
+        setIsLoading(false)
+      });
+  }
+
   function renderMovies(movies, searchValue, checkboxValue) {
     const filteredMovies = filterMovies(movies, searchValue, checkboxValue);
-      setMoviesToRender(filteredMovies.map(movie => {
+    setMoviesToRender(
+      filteredMovies.map(movie => {
         return {
           nameRU: movie.nameRU,
           nameEN: movie.nameEN,
@@ -117,30 +129,52 @@ function App() {
           id: movie.id,
           movieId: movie.id,
         };
-      }))
+      })
+    );
   }
 
   function handleSearchMovies(searchValue, checkboxValue) {
-    if (allMovies.length) { 
+    if (allMovies.length) {
       return renderMovies(allMovies, searchValue, checkboxValue);
-    }
-    else {
+    } else {
       setIsLoading(true);
       return getMovies()
         .then(movies => {
           setAllMovies(movies);
-          renderMovies(movies, searchValue, checkboxValue)
+          renderMovies(movies, searchValue, checkboxValue);
         })
         .catch(err => console.log(err))
         .finally(() => setIsLoading(false));
     }
   }
 
-  
-
-  function handleSaveMovie({ nameRU, nameEN, country, duration, director, year, description, image, trailerLink, thumbnail, movieId }) {
+  function handleSaveMovie({
+    nameRU,
+    nameEN,
+    country,
+    duration,
+    director,
+    year,
+    description,
+    image,
+    trailerLink,
+    thumbnail,
+    movieId,
+  }) {
     setIsLoading(true);
-    saveMovie({ nameRU, nameEN, country, duration, director, year, description, image, trailerLink, thumbnail, movieId })
+    saveMovie({
+      nameRU,
+      nameEN,
+      country,
+      duration,
+      director,
+      year,
+      description,
+      image,
+      trailerLink,
+      thumbnail,
+      movieId,
+    })
       .then(newMovie => {
         setSavedMovies([newMovie, ...savedMovies]);
       })
@@ -151,22 +185,22 @@ function App() {
   //Обработчик удаления карточки
   function handleDeleteMovie(movie) {
     setIsLoading(true);
-    const movieToDelete = savedMovies.find(m => movie.movieId === m.movieId)
+    const movieToDelete = savedMovies.find(m => movie.movieId === m.movieId);
     deleteMovie(movieToDelete._id)
       .then(removedMovie => {
         setSavedMovies(state =>
           state.filter(item => item._id !== removedMovie._id)
         );
-        // setFilteredSavedMovies(state =>
-        //   state.filter(item => item._id !== removedMovie._id)
-        // );
       })
       .catch(err => console.log(err))
       .finally(() => setIsLoading(false));
   }
 
   useEffect(() => {
-    if (!localStorage.getItem('jwt')) return;
+    if (!localStorage.getItem('jwt')) {
+      setIsInit(true);  
+      return
+    };
     checkToken()
       .then(res => {
         if (res) {
@@ -185,67 +219,74 @@ function App() {
   }, []);
 
   useEffect(() => {
-    isLoggedIn && updateSavedMovies()
+    isLoggedIn && updateSavedMovies();
   }, [isLoggedIn]);
 
 
-  return (
-    isInit && <CurrentUserContext.Provider value={currentUser}>
-      <div className='app'>
-        {isHeaderVisible && <Header isLoggedIn={isLoggedIn} />}
-        <Routes>
-          <Route path='/' element={<Content />} />
-          <Route
-            path='/movies'
-            element={
-              <ProtectedRoute isLoggedIn={isLoggedIn}>
-                <Movies
-                  foundMovies={moviesToRender}
-                  savedMovies={savedMovies}
-                  handleSearchSubmit={handleSearchMovies}
-                  handleSaveMovie={handleSaveMovie}
-                  handleDeleteMovie={handleDeleteMovie}
-                  isLoading={isLoading}
-                />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path='/saved-movies'
-            element={
-              <ProtectedRoute isLoggedIn={isLoggedIn}>
-                <SavedMovies
-                  moviesToRender={moviesToRender}
-                  savedMovies={savedMovies}
-                  handleDeleteMovie={handleDeleteMovie}
-                  updateSavedMovies={updateSavedMovies}
-                  isLoading={isLoading}
-                />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path='/profile'
-            element={
-              <ProtectedRoute isLoggedIn={isLoggedIn}>
-                <Profile user={currentUser} handleLogout={handleLogout} />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path='/signup'
-            element={<Register handleSubmit={handleRegister} />}
-          />
-          <Route
-            path='/signin'
-            element={<Login handleSubmit={handleLogin} />}
-          />
-          <Route path='/*' element={<ErrorPage />} />
-        </Routes>
-        {isFooterVisible && <Footer />}
-      </div>
-    </CurrentUserContext.Provider>
-  );
+  return isInit ?
+      ( <CurrentUserContext.Provider value={currentUser}>
+        <div className='app'>
+          {isHeaderVisible && <Header isLoggedIn={isLoggedIn} />}
+          <Routes>
+            <Route path='/' element={<Content />} />
+            <Route
+              path='/movies'
+              element={
+                <ProtectedRoute isLoggedIn={isLoggedIn}>
+                  <Movies
+                    foundMovies={moviesToRender}
+                    savedMovies={savedMovies}
+                    handleSearchSubmit={handleSearchMovies}
+                    handleSaveMovie={handleSaveMovie}
+                    handleDeleteMovie={handleDeleteMovie}
+                    isLoading={isLoading}
+                  />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/saved-movies'
+              element={
+                <ProtectedRoute isLoggedIn={isLoggedIn}>
+                  <SavedMovies
+                    moviesToRender={moviesToRender}
+                    savedMovies={savedMovies}
+                    handleDeleteMovie={handleDeleteMovie}
+                    updateSavedMovies={updateSavedMovies}
+                    isLoading={isLoading}
+                  />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/profile'
+              element={
+                <ProtectedRoute isLoggedIn={isLoggedIn}>
+                  <Profile
+                    handleLogout={handleLogout}
+                    handleFormSubmit={handleUpdateProfile}
+                    isLoading={isLoading}
+                    resStatus={resStatus}
+                  />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/signup'
+              element={<Register handleSubmit={handleRegister} resStatus={resStatus} />}
+            />
+            <Route
+              path='/signin'
+              element={<Login handleSubmit={handleLogin} resStatus={resStatus} />}
+            />
+            <Route path='/*' element={<ErrorPage />} />
+          </Routes>
+          {isFooterVisible && <Footer />}
+        </div>
+      </CurrentUserContext.Provider>
+    
+    
+  ) : null
 }
 
 export default App;

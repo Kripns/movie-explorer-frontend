@@ -47,6 +47,7 @@
   font-weight: 400;
   font-size: 11px;
   line-height: 13px;
+  outline-color: var(--green-background);
 }
 
 .profile__form-buttons {
@@ -54,7 +55,7 @@
   flex-direction: column;
   align-items: center;
   gap: 16px;
-  padding-top: 213px;
+  padding-top: 143px;
 }
 
 .profile__form-button {
@@ -83,6 +84,24 @@
   color: #EE3465;
 }
 
+.profile__form-button_disabled {
+  cursor: default;
+  opacity: .3;
+}
+
+.profile__status-message {
+  width: 100%;
+  margin: 0;
+  padding: 70px 30px 0;
+  box-sizing: border-box;
+  text-align: center;
+  visibility: hidden;
+}
+
+.profile__status-message_visible {
+  visibility: visible;
+}
+
 @media screen and (max-width: 768px) {
   .profile {
     padding: 236px 0 269px;
@@ -101,7 +120,7 @@
   }
 
   .profile__form-buttons {
-    padding-top: 210px;
+    padding-top: 140px;
   }
 }
 
@@ -124,7 +143,7 @@
   }
 
   .profile__form-buttons {
-    padding-top: 379px;
+    padding-top: 309px;
   }
 
   .profile__form-button_type_edit {
