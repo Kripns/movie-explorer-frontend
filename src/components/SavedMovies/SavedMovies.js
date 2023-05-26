@@ -48,13 +48,13 @@ function SavedMovies(props) {
     setNothingFound(!filteredSavedMovies.length)
   }, [filteredSavedMovies.length])
 
-  useEffect(() => {
-    resStatus
-    ? setStatusMessage(resErrors.error500)
-    : nothingFound
-    ? setStatusMessage(resErrors.nothingFound)
-    : setStatusMessage(false)
-  }, [resStatus, nothingFound]);
+  // useEffect(() => {
+  //   resStatus
+  //   ? setStatusMessage(resErrors.error500)
+  //   : nothingFound
+  //   ? setStatusMessage(resErrors.nothingFound)
+  //   : setStatusMessage(false)
+  // }, [resStatus, nothingFound]);
   
 
   return (
@@ -62,7 +62,7 @@ function SavedMovies(props) {
       <SearchForm handleSubmit={handleSearchMovies} />
       {
       isLoading ? <Preloader />
-      : statusMessage ? <p className='movies__error'>{statusMessage}</p>
+      // : statusMessage ? <p className='movies__error'>{statusMessage}</p>
       : <MoviesCardList
           movies={moviesToRender}
           savedMovies={savedMovies}

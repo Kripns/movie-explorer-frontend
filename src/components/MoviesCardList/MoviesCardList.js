@@ -8,18 +8,20 @@ function MoviesCardList(props) {
   const location = useLocation();
   const cards = location.pathname === '/movies' ? movies : savedMoviesToRender;
 
-  useEffect(() => {
-    movies.map(movie => {
-      movie.isLiked = savedMovies.some(m => m.movieId === movie.id);
-      return movie;
-    }, [movies, savedMovies])
-  });
+  // useEffect(() => {
+  //   movies.map(movie => {
+  //     movie.isLiked = savedMovies.some(m => m.movieId === movie.id);
+  //     // console.log(movie);
+  //     return movie;
+  //   // }, [cards, savedMovies])
+  // }, [])
+  // });
 
   return (
     <ul className='movies__card-list'>
-      {cards.map((item, index) => {
+      {cards.map((item) => {
         return (
-          <li key={index}>
+          <li key={item.id || item.movieId}>
             <MoviesCard
               card={item}
               savedMovies={savedMovies}

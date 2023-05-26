@@ -36,6 +36,8 @@
 .movies__error {
   margin: 0;
   padding: 100px 0;
+  width: calc(100% - 140px);
+  text-align: center;
 }
 
 @media screen and (max-width: 540px) {

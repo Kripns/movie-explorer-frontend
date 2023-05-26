@@ -23,13 +23,12 @@ import {
   getSavedMovies,
 } from '../../utils/MainApi';
 import { filterMovies } from '../../utils/functions';
-import { apiUrl } from '../../utils/constants';
 
 function App() {
   // Переменные состояния
   const [currentUser, setCurrentUser] = useState({});
   const [allMovies, setAllMovies] = useState([]);
-  const [moviesToRender, setMoviesToRender] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState(JSON.parse(localStorage.getItem('filteredMovies')) || []);
   const [savedMovies, setSavedMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -53,9 +52,7 @@ function App() {
   function updateSavedMovies() {
     setIsLoading(true);
     return getSavedMovies()
-      .then(movies => {
-        setSavedMovies(movies);
-      })
+      .then(movies => setSavedMovies(movies))
       .catch(err => setResStatus(err))
       .finally(() => setIsLoading(false));
   }
@@ -94,51 +91,18 @@ function App() {
     setCurrentUser({});
     setAllMovies([]);
     setSavedMovies([]);
-    setMoviesToRender([]);
     setIsLoggedIn(false);
     navigate('/signin');
   }
 
   function handleUpdateProfile(name, email) {
     if (!name || !email) return;
-    setIsLoading(true);
     return editProfile({ name, email })
       .then(updatedUser => {
         setCurrentUser(updatedUser);
         setResStatus('ok');
       })
       .catch(err => setResStatus(err))
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }
-
-  function prepareMoviesToRender(movies, searchValue, checkboxValue) {
-    const filteredMovies = filterMovies(movies, searchValue, checkboxValue);
-    setMoviesToRender(
-      filteredMovies.map(movie => {
-        return {
-          nameRU: movie.nameRU,
-          nameEN: movie.nameEN,
-          country: movie.country,
-          duration: movie.duration,
-          director: movie.director,
-          year: movie.year,
-          description: movie.description,
-          image: `${apiUrl}${movie.image.url}`,
-          trailerLink: movie.trailerLink,
-          thumbnail: `${apiUrl}${movie.image.formats.thumbnail.url}`,
-          id: movie.id,
-          movieId: movie.id,
-        };
-      })
-    );
-
-    !filteredMovies.length ? setResStatus('nothingFound') : setResStatus(false);
-
-    localStorage.setItem('search', searchValue);
-    localStorage.setItem('checkbox', checkboxValue);
-    localStorage.setItem('movies', JSON.stringify(movies));
   }
 
   function handleSearchMovies(searchValue, checkboxValue) {
@@ -147,60 +111,38 @@ function App() {
       return;
     }
     if (allMovies.length) {
-      return prepareMoviesToRender(allMovies, searchValue, checkboxValue);
+      setFilteredMovies(filterMovies(allMovies, searchValue, checkboxValue));
+      localStorage.setItem('search', searchValue);
+      localStorage.setItem('checkbox', checkboxValue);
+      localStorage.setItem('filteredMovies', JSON.stringify(filteredMovies));
+      return;
     } else {
       setIsLoading(true);
       return getMovies()
         .then(movies => {
-          // setAllMovies(JSON.parse(localStorage.getItem('movies')));
           setAllMovies(movies);
-          // setSearchValue(searchValue);
-          // setCheckboxValue(checkboxValue);
-          prepareMoviesToRender(movies, searchValue, checkboxValue);
+          setFilteredMovies(filterMovies(movies, searchValue, checkboxValue));
+          localStorage.setItem('search', searchValue);
+          localStorage.setItem('checkbox', checkboxValue);
+          localStorage.setItem('filteredMovies', JSON.stringify(filteredMovies));
+          return;
         })
         .catch(err => setResStatus(err))
         .finally(() => setIsLoading(false));
     }
   }
 
-  function handleSaveMovie({
-    nameRU,
-    nameEN,
-    country,
-    duration,
-    director,
-    year,
-    description,
-    image,
-    trailerLink,
-    thumbnail,
-    movieId,
-  }) {
-    setIsLoading(true);
-    saveMovie({
-      nameRU,
-      nameEN,
-      country,
-      duration,
-      director,
-      year,
-      description,
-      image,
-      trailerLink,
-      thumbnail,
-      movieId,
-    })
+  function handleSaveMovie(movie) {
+    saveMovie(movie)
       .then(newMovie => {
         setSavedMovies([newMovie, ...savedMovies]);
       })
       .catch(err => setResStatus(err))
-      .finally(() => setIsLoading(false));
   }
 
   //Обработчик удаления карточки
   function handleDeleteMovie(movie) {
-    setIsLoading(true);
-    const movieToDelete = savedMovies.find(m => movie.movieId === m.movieId);
+    const movieToDelete = savedMovies.find(m => movie.id === m.movieId || movie.movieId === m.movieId);
     deleteMovie(movieToDelete._id)
       .then(removedMovie => {
         setSavedMovies(state =>
@@ -208,7 +150,6 @@ function App() {
         );
       })
       .catch(err => setResStatus(err))
-      .finally(() => setIsLoading(false));
   }
 
   useEffect(() => {
@@ -228,14 +169,19 @@ function App() {
         }
       })
       .catch(err => {
-        console.log(err);
+        setResStatus(err);
       })
       .finally(() => setIsInit(true));
   }, []);
 
   useEffect(() => {
+    localStorage.setItem('filteredMovies', JSON.stringify(filteredMovies))
+  }, [filteredMovies])
+  
+  useEffect(() => {
     isLoggedIn && updateSavedMovies();
   }, [isLoggedIn]);
+
 
   return isInit ? (
     <CurrentUserContext.Provider value={currentUser}>
@@ -248,13 +194,12 @@ function App() {
             element={
               <ProtectedRoute isLoggedIn={isLoggedIn}>
                 <Movies
-                  foundMovies={moviesToRender}
+                  foundMovies={filteredMovies}
                   savedMovies={savedMovies}
                   handleSearchSubmit={handleSearchMovies}
                   handleSaveMovie={handleSaveMovie}
                   handleDeleteMovie={handleDeleteMovie}
                   isLoading={isLoading}
-                  prepareMoviesToRender={prepareMoviesToRender}
                   resStatus={resStatus}
                 />
               </ProtectedRoute>
@@ -265,7 +210,7 @@ function App() {
             element={
               <ProtectedRoute isLoggedIn={isLoggedIn}>
                 <SavedMovies
-                  moviesToRender={moviesToRender}
+                  moviesToRender={filteredMovies}
                   savedMovies={savedMovies}
                   handleDeleteMovie={handleDeleteMovie}
                   updateSavedMovies={updateSavedMovies}

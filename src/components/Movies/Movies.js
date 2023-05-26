@@ -1,10 +1,9 @@
+import './Movies.css';
 import { useCallback, useState, useEffect, useMemo } from 'react';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
 import { debounce } from '../../utils/functions';
-import { resErrors } from '../../utils/constants';
-import './Movies.css';
 
 function Movies(props) {
   const {
@@ -14,15 +13,14 @@ function Movies(props) {
     handleSaveMovie,
     handleDeleteMovie,
     isLoading,
-    prepareMoviesToRender,
-    resStatus
+    // resStatus
   } = props;
 
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [page, setPage] = useState(1);
   const [searchValue, setSearchValue] = useState(null);
   const [checkboxValue, setCheckboxValue] = useState(null);
-  const [statusMessage, setStatusMessage] = useState(false);
+  // const [statusMessage, setStatusMessage] = useState(false);
 
   const handleResize = useCallback(
     debounce(() => {
@@ -41,17 +39,13 @@ function Movies(props) {
     setPage(prev => prev + 1);
   }, []);
 
-  useEffect(() => {
-    const localMovies = JSON.parse(localStorage.getItem('movies'));
-    const localCheckbox = JSON.parse(localStorage.getItem('checkbox'));
-    const localSearch = localStorage.getItem('search');
-
-    if(localSearch !== null) {
-      setSearchValue(localSearch)
-      setCheckboxValue(localCheckbox)
-      return prepareMoviesToRender(localMovies, localSearch, localCheckbox);
-    }
-  }, []);
+  // useEffect(() => {
+  //   foundMovies.map(movie => {
+  //     movie.isLiked = savedMovies.some(m => m.movieId === movie.id);
+  //     return movie;
+  //   // }, [cards, savedMovies])
+  // }, [])
+  // });
 
   useEffect(() => {
     setSearchValue(localStorage.getItem('search', searchValue));
@@ -69,14 +63,14 @@ function Movies(props) {
     };
   }, []);
 
-  useEffect(() => {
-    resStatus === 'emptySearch'
-    ? setStatusMessage(resErrors.emptySearch)
-    : resStatus === 'nothingFound'
-    ? setStatusMessage(resErrors.nothingFound)
-    : setStatusMessage(resErrors.error500)
-    if(!resStatus) { setStatusMessage(false) };
-  }, [resStatus, searchValue]);
+  // useEffect(() => {
+  //   resStatus === 'emptySearch'
+  //   ? setStatusMessage(resErrors.emptySearch)
+  //   : resStatus === 'nothingFound'
+  //   ? setStatusMessage(resErrors.nothingFound)
+  //   : setStatusMessage(resErrors.error500)
+  //   if(!resStatus) { setStatusMessage(false) };
+  // }, [resStatus, searchValue]);
 
 
   return (
@@ -84,7 +78,7 @@ function Movies(props) {
       <SearchForm handleSubmit={handleSearchSubmit} searchValue={searchValue} checkboxValue={checkboxValue} />
       {
       isLoading ? <Preloader />
-      : resStatus ? <p className='movies__error'>{statusMessage}</p>
+      // : resStatus ? <p className='movies__error'>{statusMessage}</p>
       : <>
           <MoviesCardList
             movies={cardsToRender}

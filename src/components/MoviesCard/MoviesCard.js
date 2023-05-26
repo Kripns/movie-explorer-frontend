@@ -1,7 +1,10 @@
-import { useLocation } from 'react-router';
 import './MoviesCard.css';
+import { useLocation } from 'react-router';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { apiUrl } from '../../utils/constants';
+import { transformTime } from '../../utils/functions';
+
 
 function MoviesCard(props) {
   const { card, savedMovies, handleSaveMovie, handleDeleteMovie } = props;
@@ -24,13 +27,11 @@ function MoviesCard(props) {
     card.isLiked = savedMovies.some(m => m.movieId === card.id);
   }, [card, savedMovies])
 
-
-
   return (
     <article className='movies__card'>
       <div className='movies__card-info'>
         <h2 className='movies__card-heading'>{card.nameRU}</h2>
-        <p className='movies__card-duration'>{card.duration}</p>
+        <p className='movies__card-duration'>{transformTime(card.duration)}</p>
         {location.pathname === '/movies' && (
           <button
             className={`movies__card-button ${likeButtonClassName}`}
@@ -49,7 +50,7 @@ function MoviesCard(props) {
       <Link to={card.trailerLink} target='_blank'>
         <img
           className='movies__card-image'
-          src={card.image}
+          src={card.image.url ? `${apiUrl}${card.image.url}` : card.image}
           alt={card.nameRU}
         />
       </Link>

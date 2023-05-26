@@ -1,4 +1,5 @@
 import ApiConfig from './ApiConfig';
+import { apiUrl } from './constants';
 
 function request(url, options) {
   return fetch(url, options).then(handleResponse);
@@ -80,12 +81,24 @@ export function saveMovie(data) {
       'content-type': 'application/json',
       authorization: `Bearer ${localStorage.getItem('jwt')}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      nameRU: data.nameRU,
+      nameEN: data.nameEN,
+      country: data.country,
+      duration: data.duration,
+      director: data.director,
+      year: data.year,
+      description: data.description,
+      image: `${apiUrl}${data.image.url}`,
+      trailerLink: data.trailerLink,
+      thumbnail: `${apiUrl}${data.image.formats.thumbnail.url}`,
+      movieId: data.id,
+    }),
   });
 }
 
-export function deleteMovie(movieId) {
-  return request(`${ApiConfig.url}/movies/${movieId}`, {
+export function deleteMovie(movie_id) {
+  return request(`${ApiConfig.url}/movies/${movie_id}`, {
     method: 'DELETE',
     credentials: 'include',
     headers: {

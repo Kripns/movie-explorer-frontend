@@ -10,7 +10,7 @@ function Profile(props) {
   const [isInputsDisabled, setIsInputsDisabled] = useState(false);
   const [statusMessage, setStatusMessage] = useState(false);
   const currentUser = useContext(CurrentUserContext);
-  const { values, setValues, handleChange } = useFormAndValidation();
+  const { values, setValues, handleChange, isValid } = useFormAndValidation();
   
   function handleClick() {
     handleLogout()
@@ -26,21 +26,21 @@ function Profile(props) {
   }, []);
 
   useEffect(() => {
-    setIsSubmitDisabled((values.name === currentUser.name && values.email === currentUser.email) || isLoading)
-  }, [currentUser, values, isLoading]);
+    setIsSubmitDisabled((values.name === currentUser.name && values.email === currentUser.email) || isLoading || !isValid)
+  }, [currentUser, values, isLoading, isValid]);
 
   useEffect(() => {
     setIsInputsDisabled(isLoading);
   }, [isLoading]);
 
-  useEffect(() => {
-    resStatus === 'ok' 
-    ? setStatusMessage(resErrors.profile200)
-    : resStatus === `Ошибка: 409`
-    ? setStatusMessage(resErrors.error409)
-    : setStatusMessage(resErrors.profileError);
-    if(!resStatus) { setStatusMessage(false) };
-  }, [resStatus]);
+  // useEffect(() => {
+  //   resStatus === 'ok' 
+  //   ? setStatusMessage(resErrors.profile200)
+  //   : resStatus === `Ошибка: 409`
+  //   ? setStatusMessage(resErrors.error409)
+  //   : setStatusMessage(resErrors.profileError);
+  //   if(!resStatus) { setStatusMessage(false) };
+  // }, [resStatus]);
 
   return (
     <section className='profile'>
