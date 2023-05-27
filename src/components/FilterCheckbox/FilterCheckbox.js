@@ -1,15 +1,13 @@
-import { useState } from 'react';
 import './FilterCheckbox.css';
 
 function FilterCheckbox(props) {
-  const { handleChange, isChecked } = props;
-  const [isCheckboxDisabled, setIsCheckboxDisabled] = useState(false);
+  const { handleChange, isChecked, isLoading } = props;
 
   return (
     <fieldset className='checkbox'>
       <label
         className={`checkbox__lable ${
-          isCheckboxDisabled && 'checkbox__lable_inactive'
+          isLoading && 'checkbox__lable_inactive'
         }`}
         htmlFor='short-movies'
       >
@@ -19,11 +17,11 @@ function FilterCheckbox(props) {
           id='short-movies'
           checked={isChecked}
           onChange={handleChange}
-          disabled={isCheckboxDisabled}
+          disabled={isLoading}
         />
         <div
           className={`checkbox__container ${
-            isCheckboxDisabled && 'checkbox__container_inactive'
+            isLoading && 'checkbox__container_inactive'
           } ${isChecked && `checkbox__container_checked`}`}
         >
           <div className='checkbox__circle' />

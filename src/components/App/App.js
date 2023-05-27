@@ -25,7 +25,7 @@ import {
 import { filterMovies } from '../../utils/functions';
 
 function App() {
-  // Переменные состояния
+
   const [currentUser, setCurrentUser] = useState({});
   const [allMovies, setAllMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState(JSON.parse(localStorage.getItem('filteredMovies')) || []);
@@ -52,7 +52,10 @@ function App() {
   function updateSavedMovies() {
     setIsLoading(true);
     return getSavedMovies()
-      .then(movies => setSavedMovies(movies))
+      .then(movies => {
+        setSavedMovies(movies)
+        setResStatus(false);
+      })
       .catch(err => setResStatus(err))
       .finally(() => setIsLoading(false));
   }
@@ -65,6 +68,7 @@ function App() {
       .then(res => {
         if (res) {
           handleLogin(email, password);
+          setResStatus(false);
         } else {
           Promise.reject(new Error(`Ошибка: ${res.status}`));
         }
@@ -80,6 +84,7 @@ function App() {
           const { name, email, _id } = res;
           setCurrentUser({ name, email, _id });
           setIsLoggedIn(true);
+          setResStatus(false);
           navigate('/movies');
         }
       })
@@ -90,12 +95,14 @@ function App() {
     localStorage.clear();
     setCurrentUser({});
     setAllMovies([]);
+    setFilteredMovies([]);
     setSavedMovies([]);
     setIsLoggedIn(false);
+    setResStatus(false);
     navigate('/signin');
   }
 
-  function handleUpdateProfile(name, email) {
+  function handleEditProfile(name, email) {
     if (!name || !email) return;
     return editProfile({ name, email })
       .then(updatedUser => {
@@ -115,6 +122,7 @@ function App() {
       localStorage.setItem('search', searchValue);
       localStorage.setItem('checkbox', checkboxValue);
       localStorage.setItem('filteredMovies', JSON.stringify(filteredMovies));
+      setResStatus(false);
       return;
     } else {
       setIsLoading(true);
@@ -125,6 +133,7 @@ function App() {
           localStorage.setItem('search', searchValue);
           localStorage.setItem('checkbox', checkboxValue);
           localStorage.setItem('filteredMovies', JSON.stringify(filteredMovies));
+          setResStatus(false);
           return;
         })
         .catch(err => setResStatus(err))
@@ -136,11 +145,11 @@ function App() {
     saveMovie(movie)
       .then(newMovie => {
         setSavedMovies([newMovie, ...savedMovies]);
+        setResStatus(false);
       })
       .catch(err => setResStatus(err))
   }
 
-  //Обработчик удаления карточки
   function handleDeleteMovie(movie) {
     const movieToDelete = savedMovies.find(m => movie.id === m.movieId || movie.movieId === m.movieId);
     deleteMovie(movieToDelete._id)
@@ -148,6 +157,7 @@ function App() {
         setSavedMovies(state =>
           state.filter(item => item._id !== removedMovie._id)
         );
+        setResStatus(false);
       })
       .catch(err => setResStatus(err))
   }
@@ -223,7 +233,7 @@ function App() {
               <ProtectedRoute isLoggedIn={isLoggedIn}>
                 <Profile
                   handleLogout={handleLogout}
-                  handleFormSubmit={handleUpdateProfile}
+                  handleFormSubmit={handleEditProfile}
                   isLoading={isLoading}
                   resStatus={resStatus}
                 />

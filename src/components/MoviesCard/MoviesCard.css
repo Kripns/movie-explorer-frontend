@@ -8,7 +8,6 @@
   display: flex;
   flex-direction: column;
   gap: 9px;
-
   position: relative;
   padding: 14px;
 }

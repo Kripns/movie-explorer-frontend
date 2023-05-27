@@ -11,7 +11,6 @@ function MoviesCard(props) {
   const location = useLocation();
 
   const isLiked = useMemo(() => {
-    console.log(`render ${card.nameRU}`)
     return savedMovies.some(m => m.movieId === card.id);
   }, [card, savedMovies])
 

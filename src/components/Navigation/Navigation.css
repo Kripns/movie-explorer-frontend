@@ -29,7 +29,6 @@
   color: var(--black-text);
 }
 
-
 .navigation__link:hover {
   opacity: .3;
 }

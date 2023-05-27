@@ -5,7 +5,6 @@ import Preloader from '../Preloader/Preloader';
 import { filterMovies } from '../../utils/functions';
 import { resErrors } from '../../utils/constants';
 
-
 function SavedMovies(props) {
   const {
     moviesToRender,
@@ -36,7 +35,8 @@ function SavedMovies(props) {
   }, [])
 
   useEffect(() => {
-    setFilteredSavedMovies(filterMovies(savedMovies, searchValue, checkboxValue))
+    setFilteredSavedMovies(filterMovies(savedMovies, searchValue, checkboxValue));
+    setStatusMessage(false);
   }, [savedMovies, searchValue, checkboxValue])
 
   
@@ -45,24 +45,24 @@ function SavedMovies(props) {
   }, [filteredSavedMovies, savedMovies]);
 
   useEffect(() => {
-    setNothingFound(!filteredSavedMovies.length)
-  }, [filteredSavedMovies.length])
+    setNothingFound(!filteredSavedMovies.length && searchValue)
+  }, [filteredSavedMovies.length, searchValue])
 
-  // useEffect(() => {
-  //   resStatus
-  //   ? setStatusMessage(resErrors.error500)
-  //   : nothingFound
-  //   ? setStatusMessage(resErrors.nothingFound)
-  //   : setStatusMessage(false)
-  // }, [resStatus, nothingFound]);
+  useEffect(() => {
+    resStatus
+    ? setStatusMessage(resErrors.error500)
+    : nothingFound
+    ? setStatusMessage(resErrors.nothingFound)
+    : setStatusMessage(false)
+  }, [resStatus, nothingFound]);
   
 
   return (
     <section className='movies movies_place_saved-movies'>
-      <SearchForm handleSubmit={handleSearchMovies} />
+      <SearchForm handleSubmit={handleSearchMovies} isLoading={isLoading} />
       {
       isLoading ? <Preloader />
-      // : statusMessage ? <p className='movies__error'>{statusMessage}</p>
+      : statusMessage ? <p className='movies__error'>{statusMessage}</p>
       : <MoviesCardList
           movies={moviesToRender}
           savedMovies={savedMovies}

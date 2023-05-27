@@ -4,6 +4,7 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
 import { debounce } from '../../utils/functions';
+import { resErrors } from '../../utils/constants';
 
 function Movies(props) {
   const {
@@ -13,14 +14,14 @@ function Movies(props) {
     handleSaveMovie,
     handleDeleteMovie,
     isLoading,
-    // resStatus
+    resStatus
   } = props;
 
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [page, setPage] = useState(1);
   const [searchValue, setSearchValue] = useState(null);
   const [checkboxValue, setCheckboxValue] = useState(null);
-  // const [statusMessage, setStatusMessage] = useState(false);
+  const [statusMessage, setStatusMessage] = useState(false);
 
   const handleResize = useCallback(
     debounce(() => {
@@ -55,22 +56,34 @@ function Movies(props) {
     };
   }, []);
 
-  // useEffect(() => {
-  //   resStatus === 'emptySearch'
-  //   ? setStatusMessage(resErrors.emptySearch)
-  //   : resStatus === 'nothingFound'
-  //   ? setStatusMessage(resErrors.nothingFound)
-  //   : setStatusMessage(resErrors.error500)
-  //   if(!resStatus) { setStatusMessage(false) };
-  // }, [resStatus, searchValue]);
+  useEffect(() => {
+    resStatus === 'emptySearch'
+    ? setStatusMessage(resErrors.emptySearch)
+    
+    : resStatus === 'Ошибка: 500'
+    ? setStatusMessage(resErrors.error500)
+    : setStatusMessage('Что-то пошло не так.')
+    if(!resStatus) { setStatusMessage(false) };
+  }, [resStatus, searchValue]);
+
+  useEffect(() => {
+    !foundMovies.length && searchValue
+    ? setStatusMessage(resErrors.nothingFound)
+    : setStatusMessage(false)
+  }, [foundMovies, searchValue])
 
 
   return (
     <section className='movies'>
-      <SearchForm handleSubmit={handleSearchSubmit} searchValue={searchValue} checkboxValue={checkboxValue} />
+      <SearchForm
+        handleSubmit={handleSearchSubmit}
+        searchValue={searchValue}
+        checkboxValue={checkboxValue}
+        isLoading={isLoading}
+      />
       {
       isLoading ? <Preloader />
-      // : resStatus ? <p className='movies__error'>{statusMessage}</p>
+      : statusMessage ? <p className='movies__error'>{statusMessage}</p>
       : <>
           <MoviesCardList
             movies={cardsToRender}

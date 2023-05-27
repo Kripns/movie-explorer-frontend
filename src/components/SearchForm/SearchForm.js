@@ -3,7 +3,7 @@ import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import { useEffect, useState } from 'react';
 
 function SearchForm(props) {
-  const { handleSubmit, searchValue, checkboxValue } = props;
+  const { handleSubmit, searchValue, checkboxValue, isLoading } = props;
   const [value, setValue] = useState('');
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 
@@ -42,7 +42,7 @@ function SearchForm(props) {
         />
         <button className='search-form__submit-button' />
       </fieldset>
-      <FilterCheckbox handleChange={handleCheckboxChange} isChecked={isCheckboxChecked} />
+      <FilterCheckbox handleChange={handleCheckboxChange} isChecked={isCheckboxChecked} isLoading={isLoading}/>
     </form>
   );
 }

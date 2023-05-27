@@ -1,7 +1,6 @@
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import { useLocation } from 'react-router';
-import { useEffect } from 'react';
 
 function MoviesCardList(props) {
   const { movies, savedMovies, savedMoviesToRender, handleSaveMovie, handleDeleteMovie} = props;

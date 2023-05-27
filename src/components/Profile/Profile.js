@@ -33,14 +33,14 @@ function Profile(props) {
     setIsInputsDisabled(isLoading);
   }, [isLoading]);
 
-  // useEffect(() => {
-  //   resStatus === 'ok' 
-  //   ? setStatusMessage(resErrors.profile200)
-  //   : resStatus === `Ошибка: 409`
-  //   ? setStatusMessage(resErrors.error409)
-  //   : setStatusMessage(resErrors.profileError);
-  //   if(!resStatus) { setStatusMessage(false) };
-  // }, [resStatus]);
+  useEffect(() => {
+    resStatus === 'ok' 
+    ? setStatusMessage(resErrors.profile200)
+    : resStatus === `Ошибка: 409`
+    ? setStatusMessage(resErrors.error409)
+    : setStatusMessage(resErrors.profileError);
+    if(!resStatus) { setStatusMessage(false) };
+  }, [resStatus]);
 
   return (
     <section className='profile'>
