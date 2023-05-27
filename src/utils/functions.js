@@ -1,16 +1,11 @@
-import { apiUrl } from './constants';
-
 export function filterMovies(movies, searchValue, checkboxValue) {
   const foundMovies = movies.filter(movie => {
-    // movie.movieId = movie.id || movie.movieId;
-    // movie.image = `${apiUrl}${movie.image.url}` || movie.image;
-    // movie.thumbnail = `${apiUrl}${movie.image.formats.thumbnail.url}` || '';
-
     return (
       movie['nameRU'].toLowerCase().includes(searchValue.toLowerCase()) ||
       movie['nameEN'].toLowerCase().includes(searchValue.toLowerCase())
     );
   });
+
   const filteredMovies = checkboxValue
     ? foundMovies.filter(movie => Number(movie.duration) <= 40)
     : foundMovies;

@@ -99,7 +99,7 @@ function App() {
     setSavedMovies([]);
     setIsLoggedIn(false);
     setResStatus(false);
-    navigate('/signin');
+    navigate('/');
   }
 
   function handleEditProfile(name, email) {
