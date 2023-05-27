@@ -9,7 +9,11 @@ import { transformTime } from '../../utils/functions';
 function MoviesCard(props) {
   const { card, savedMovies, handleSaveMovie, handleDeleteMovie } = props;
   const location = useLocation();
-  const { isLiked } = card; 
+
+  const isLiked = useMemo(() => {
+    console.log(`render ${card.nameRU}`)
+    return savedMovies.some(m => m.movieId === card.id);
+  }, [card, savedMovies])
 
   const likeButtonClassName = isLiked
     ? 'movies__card-button_liked'
@@ -22,10 +26,6 @@ function MoviesCard(props) {
   function handleDelete() {
     return handleDeleteMovie(card);
   }
-
-  useMemo(() => {
-    card.isLiked = savedMovies.some(m => m.movieId === card.id);
-  }, [card, savedMovies])
 
   return (
     <article className='movies__card'>

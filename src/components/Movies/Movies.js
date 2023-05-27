@@ -39,14 +39,6 @@ function Movies(props) {
     setPage(prev => prev + 1);
   }, []);
 
-  // useEffect(() => {
-  //   foundMovies.map(movie => {
-  //     movie.isLiked = savedMovies.some(m => m.movieId === movie.id);
-  //     return movie;
-  //   // }, [cards, savedMovies])
-  // }, [])
-  // });
-
   useEffect(() => {
     setSearchValue(localStorage.getItem('search', searchValue));
   }, [searchValue]);

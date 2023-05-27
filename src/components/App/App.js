@@ -162,6 +162,7 @@ function App() {
         if (res) {
           setIsLoggedIn(true);
           setCurrentUser(res);
+          updateSavedMovies();
         } else {
           setIsLoggedIn(false);
           setCurrentUser({});
@@ -176,12 +177,8 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem('filteredMovies', JSON.stringify(filteredMovies))
-  }, [filteredMovies])
+  }, [filteredMovies, savedMovies])
   
-  useEffect(() => {
-    isLoggedIn && updateSavedMovies();
-  }, [isLoggedIn]);
-
 
   return isInit ? (
     <CurrentUserContext.Provider value={currentUser}>
