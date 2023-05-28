@@ -11,6 +11,7 @@ import Login from '../Login/Login';
 import Footer from '../Footer/Footer';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import ProtectedAuthRoute from '../ProtectedAuthRout/ProtectedAuthRout';
 import getMovies from '../../utils/MoviesApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import {
@@ -216,12 +217,18 @@ function App() {
           <Route
             path='/signup'
             element={
-              <Register handleSubmit={handleRegister} resStatus={resStatus} />
+              <ProtectedAuthRoute isLoggedIn={isLoggedIn}>
+                <Register handleSubmit={handleRegister} resStatus={resStatus} />
+              </ProtectedAuthRoute>
             }
           />
           <Route
             path='/signin'
-            element={<Login handleSubmit={handleLogin} resStatus={resStatus} />}
+            element={
+              <ProtectedAuthRoute isLoggedIn={isLoggedIn}>
+                <Login handleSubmit={handleLogin} resStatus={resStatus} />
+              </ProtectedAuthRoute>
+            }
           />
           <Route path='/*' element={<ErrorPage />} />
         </Routes>
