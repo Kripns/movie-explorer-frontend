@@ -22,13 +22,11 @@ import {
   deleteMovie,
   getSavedMovies,
 } from '../../utils/MainApi';
-import { filterMovies } from '../../utils/functions';
 
 function App() {
 
   const [currentUser, setCurrentUser] = useState({});
-  const [allMovies, setAllMovies] = useState([]);
-  const [filteredMovies, setFilteredMovies] = useState(JSON.parse(localStorage.getItem('filteredMovies')) || []);
+  const [allMovies, setAllMovies] = useState(JSON.parse(localStorage.getItem('allMovies')) || []);
   const [savedMovies, setSavedMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -49,6 +47,17 @@ function App() {
     location.pathname === '/movies' ||
     location.pathname === '/saved-movies';
 
+  function getAllMovies() {
+    setIsLoading(true);
+    return getMovies()
+      .then(movies => {
+        setAllMovies(movies);
+        setResStatus(false);
+      })
+      .catch(err => setResStatus(err))
+      .finally(() => setIsLoading(false));
+  }
+  
   function updateSavedMovies() {
     setIsLoading(true);
     return getSavedMovies()
@@ -95,7 +104,6 @@ function App() {
     localStorage.clear();
     setCurrentUser({});
     setAllMovies([]);
-    setFilteredMovies([]);
     setSavedMovies([]);
     setIsLoggedIn(false);
     setResStatus(false);
@@ -110,35 +118,6 @@ function App() {
         setResStatus('ok');
       })
       .catch(err => setResStatus(err))
-  }
-
-  function handleSearchMovies(searchValue, checkboxValue) {
-    if (!searchValue.length) {
-      setResStatus('emptySearch');
-      return;
-    }
-    if (allMovies.length) {
-      setFilteredMovies(filterMovies(allMovies, searchValue, checkboxValue));
-      localStorage.setItem('search', searchValue);
-      localStorage.setItem('checkbox', checkboxValue);
-      localStorage.setItem('filteredMovies', JSON.stringify(filteredMovies));
-      setResStatus(false);
-      return;
-    } else {
-      setIsLoading(true);
-      return getMovies()
-        .then(movies => {
-          setAllMovies(movies);
-          setFilteredMovies(filterMovies(movies, searchValue, checkboxValue));
-          localStorage.setItem('search', searchValue);
-          localStorage.setItem('checkbox', checkboxValue);
-          localStorage.setItem('filteredMovies', JSON.stringify(filteredMovies));
-          setResStatus(false);
-          return;
-        })
-        .catch(err => setResStatus(err))
-        .finally(() => setIsLoading(false));
-    }
   }
 
   function handleSaveMovie(movie) {
@@ -185,11 +164,6 @@ function App() {
       .finally(() => setIsInit(true));
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem('filteredMovies', JSON.stringify(filteredMovies))
-  }, [filteredMovies, savedMovies])
-  
-
   return isInit ? (
     <CurrentUserContext.Provider value={currentUser}>
       <div className='app'>
@@ -201,9 +175,9 @@ function App() {
             element={
               <ProtectedRoute isLoggedIn={isLoggedIn}>
                 <Movies
-                  foundMovies={filteredMovies}
+                  allMovies={allMovies}
+                  getAllMovies={getAllMovies}
                   savedMovies={savedMovies}
-                  handleSearchSubmit={handleSearchMovies}
                   handleSaveMovie={handleSaveMovie}
                   handleDeleteMovie={handleDeleteMovie}
                   isLoading={isLoading}
@@ -217,7 +191,6 @@ function App() {
             element={
               <ProtectedRoute isLoggedIn={isLoggedIn}>
                 <SavedMovies
-                  moviesToRender={filteredMovies}
                   savedMovies={savedMovies}
                   handleDeleteMovie={handleDeleteMovie}
                   updateSavedMovies={updateSavedMovies}

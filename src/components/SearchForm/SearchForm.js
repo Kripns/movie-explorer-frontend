@@ -3,7 +3,7 @@ import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import { useEffect, useState } from 'react';
 
 function SearchForm(props) {
-  const { handleSubmit, searchValue, checkboxValue, isLoading } = props;
+  const { getCheckboxValue, handleSubmit, searchValue, checkboxValue, isLoading } = props;
   const [value, setValue] = useState('');
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 
@@ -21,6 +21,7 @@ function SearchForm(props) {
     return setIsCheckboxChecked(!isCheckboxChecked);
   };
 
+//заполняем инпут чекбокс из ЛС
   useEffect(() => {
     if(searchValue && searchValue !== null) setValue(searchValue)
   }, [searchValue])
@@ -28,6 +29,11 @@ function SearchForm(props) {
   useEffect(() => {
     if(checkboxValue && checkboxValue !== null) setIsCheckboxChecked(checkboxValue)
   }, [checkboxValue])
+
+//получаем чекбокс при его изменении и сохраняем в стэйт
+  useEffect(() => {
+    getCheckboxValue(isCheckboxChecked);
+  }, [isCheckboxChecked])
 
   return (
     <form className='search-form' onSubmit={handleFormSubmit}>
@@ -42,7 +48,7 @@ function SearchForm(props) {
         />
         <button className='search-form__submit-button' />
       </fieldset>
-      <FilterCheckbox handleChange={handleCheckboxChange} isChecked={isCheckboxChecked} isLoading={isLoading}/>
+      <FilterCheckbox handleChange={handleCheckboxChange} isChecked={checkboxValue} isLoading={isLoading}/>
     </form>
   );
 }

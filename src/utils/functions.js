@@ -5,13 +5,12 @@ export function filterMovies(movies, searchValue, checkboxValue) {
       movie['nameEN'].toLowerCase().includes(searchValue.toLowerCase())
     );
   });
-
   const filteredMovies = checkboxValue
     ? foundMovies.filter(movie => Number(movie.duration) <= 40)
     : foundMovies;
 
   return filteredMovies;
-}
+};
 
 export function debounce(func, timeout = 300) {
   let timer;

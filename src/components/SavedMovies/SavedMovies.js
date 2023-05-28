@@ -7,7 +7,6 @@ import { resErrors } from '../../utils/constants';
 
 function SavedMovies(props) {
   const {
-    moviesToRender,
     savedMovies,
     updateSavedMovies,
     handleDeleteMovie,
@@ -27,6 +26,10 @@ function SavedMovies(props) {
     setCheckboxValue(checkboxValue);
   }
 
+  function getCheckboxValue(checkboxValue) {
+    return setCheckboxValue(checkboxValue);
+  };
+
   useEffect(() => {
     updateSavedMovies();
     setSavedMoviesToRender(savedMovies)
@@ -43,10 +46,14 @@ function SavedMovies(props) {
   useEffect(() => {
     setSavedMoviesToRender((filteredSavedMovies.length && filteredSavedMovies) || savedMovies);
   }, [filteredSavedMovies, savedMovies]);
-
+  
   useEffect(() => {
     setNothingFound(!filteredSavedMovies.length && searchValue)
   }, [filteredSavedMovies.length, searchValue])
+
+  useEffect(() => {
+    setSavedMoviesToRender(filterMovies(savedMovies, searchValue, checkboxValue));
+  }, [checkboxValue]);
 
   useEffect(() => {
     resStatus
@@ -59,14 +66,18 @@ function SavedMovies(props) {
 
   return (
     <section className='movies movies_place_saved-movies'>
-      <SearchForm handleSubmit={handleSearchMovies} isLoading={isLoading} />
+      <SearchForm
+        handleSubmit={handleSearchMovies}
+        getCheckboxValue={getCheckboxValue}
+        searchValue={searchValue}
+        checkboxValue={checkboxValue}
+        isLoading={isLoading}
+      />
       {
       isLoading ? <Preloader />
       : statusMessage ? <p className='movies__error'>{statusMessage}</p>
       : <MoviesCardList
-          movies={moviesToRender}
           savedMovies={savedMovies}
-          filteredSavedMovies={filteredSavedMovies}
           savedMoviesToRender={savedMoviesToRender}
           handleDeleteMovie={handleDeleteMovie}
         />
