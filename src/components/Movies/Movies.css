@@ -28,6 +28,18 @@
   opacity: .3;
 }
 
+.movies__button_disabled {
+  visibility: hidden;
+  cursor: default;
+}
+
+.movies__error {
+  margin: 0;
+  padding: 100px 0;
+  width: calc(100% - 140px);
+  text-align: center;
+}
+
 @media screen and (max-width: 540px) {
   .movies__button {
     width: 240px;

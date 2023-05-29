@@ -1,69 +1,14 @@
-import cardImage from '../images/card-image.jpg'
+export const apiUrl = 'https://api.nomoreparties.co';
 
-export const currentUser = {
-  name: 'Виталий',
-  email: 'pochta@yandex.ru',
-};
-
-export const cards = [
-  {
-    nameRU: '33 слова о дизайне',
-    image: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    nameRU: '33 слова о дизайне',
-    image: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    nameRU: '33 слова о дизайне',
-    image: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    nameRU: '33 слова о дизайне',
-    image: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    nameRU: '33 слова о дизайне',
-    image: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    nameRU: '33 слова о дизайне',
-    image: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    nameRU: '33 слова о дизайне',
-    image: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    nameRU: '33 слова о дизайне',
-    image: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    nameRU: '33 слова о дизайне',
-    image: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    nameRU: '33 слова о дизайне',
-    image: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    nameRU: '33 слова о дизайне',
-    image: cardImage,
-    duration: '1ч 47м',
-  },
-  {
-    nameRU: '33 слова о дизайне',
-    image: cardImage,
-    duration: '1ч 47м',
-  },
-];
+export const resErrors = {
+  emptySearch: 'Нужно ввести ключевое слово.',
+  nothingFound: 'Ничего не найдено.',
+  profile200: 'Данные изменены.',
+  badLogin: 'Вы ввели неправильный логин или пароль.',
+  badToken: 'При авторизации произошла ошибка. Переданный токен некорректен.',
+  registerError: 'При регистрации пользователя произошла ошибка.',
+  profileError: 'При обновлении профиля произошла ошибка.',
+  error409: 'Пользователь с таким email уже существует.',
+  error404: 'Страница по указанному маршруту не найдена.',
+  error500: 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.',
+}

@@ -42,6 +42,7 @@
   font-weight: 400;
   font-size: 10px;
   line-height: 12px;
+  padding-top: 6px;
   color: #EE3465;
 }
 
@@ -65,11 +66,16 @@
 }
 
 .auth-form__button_signup {
-  margin-top: 134px;
+  margin-top: 84px;
 }
 
 .auth-form__button_signin {
-  margin-top: 197px;
+  margin-top: 147px;
+}
+
+.auth-form__button_disabled {
+  cursor: default;
+  opacity: .3;
 }
 
 .auth-form__subheading {
@@ -93,6 +99,19 @@
 
 .auth-form__link:hover {
   opacity: .3;
+}
+
+.auth-form__status-message {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  padding: 50px 20px 0;
+  box-sizing: border-box;
+  visibility: hidden;
+}
+
+.auth-form__status-message_visible {
+  visibility: visible;
 }
 
 @media screen and (max-width: 768px) {

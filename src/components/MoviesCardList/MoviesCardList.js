@@ -1,24 +1,26 @@
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
+import { useLocation } from 'react-router';
 
 function MoviesCardList(props) {
-  const { cards, buttonClassName } = props;
+  const { movies, savedMovies, savedMoviesToRender, handleSaveMovie, handleDeleteMovie} = props;
+  const location = useLocation();
+  const cards = location.pathname === '/movies' ? movies : savedMoviesToRender;
+
   return (
     <ul className='movies__card-list'>
-      {!cards.length ? (
-        <p>Фильмы не надены.</p>
-      ) : (
-        cards.map((item, index) => {
-          return (
-            <li key={index}>
-              <MoviesCard
-                card={item}
-                buttonClassName={buttonClassName}
-              />
-            </li>
-          );
-        })
-      )}
+      {cards.map((item) => {
+        return (
+          <li key={item.id || item.movieId}>
+            <MoviesCard
+              card={item}
+              savedMovies={savedMovies}
+              handleSaveMovie={handleSaveMovie}
+              handleDeleteMovie={handleDeleteMovie}
+            />
+          </li>
+        );
+      })}
     </ul>
   );
 }
